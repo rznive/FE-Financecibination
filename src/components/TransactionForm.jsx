@@ -102,25 +102,6 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-gray-700">
-          Account Name
-        </label>
-        <select
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
-        >
-          <option value="">-- select account --</option>
-          {accounts.map((acc) => (
-            <option key={acc.account_id} value={acc.account_name}>
-              {acc.account_name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
           Amount
         </label>
         <input
@@ -141,6 +122,25 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
           rows="2"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
         />
+      </div>
+       <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Account Name
+        </label>
+        <select
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
+        >
+          <option value="">-- select account --</option>
+          {accounts.map((acc) => (
+            <option key={acc.account_id} value={acc.account_name}>
+              {acc.account_name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="flex justify-end space-x-2">
         <button
