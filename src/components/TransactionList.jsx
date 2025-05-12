@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 
 export default function TransactionList() {
   const [mutations, setMutations] = useState([]);
@@ -7,7 +8,7 @@ export default function TransactionList() {
     const fetchMutations = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/api/mutasi", {
+        const res = await fetch(`${API_BASE_URL}/mutasi`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
