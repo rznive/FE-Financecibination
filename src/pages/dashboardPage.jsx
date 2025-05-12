@@ -12,10 +12,31 @@ export default function DashboardPage() {
   const [mutationType, setMutationType] = useState(null);
   const [mutations, setMutations] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [balances, setBalances] = useState([]);
 
   useEffect(() => {
     fetchMutations();
+    fetchBalances();
   }, []);
+
+    async function fetchBalances() {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE_URL}/getSaldo`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await res.json();
+      if (result.status) {
+        setBalances(result.data);
+      } else {
+        console.error("Failed to fetch balances:", result.message);
+      }
+    } catch (err) {
+      console.error("Error fetching balances:", err);
+    }
+  }
 
   async function fetchMutations() {
     setLoading(true);
@@ -42,7 +63,8 @@ export default function DashboardPage() {
   const handleAddMutation = async (newMutation) => {
   setShowAddMutation(false);
   await fetchMutations(); 
-};
+  await fetchBalances();
+  };
 
   const totalIncome = mutations
     .filter((m) => m.mutation_type === "masuk")
@@ -52,7 +74,7 @@ export default function DashboardPage() {
     .filter((m) => m.mutation_type === "keluar")
     .reduce((sum, m) => sum + m.amount, 0);
 
-  const currentBalance = totalIncome - totalExpenses;
+  const currentBalance = balances.reduce((sum, acc) => sum + acc.saldo, 0);
 
   const currentMutations = mutations.slice(0, 5);
 

@@ -61,7 +61,7 @@ export default function MutasiPage() {
 
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Show Mutasi
+                Recent Transactions
               </h2>
 
               {loading ? (

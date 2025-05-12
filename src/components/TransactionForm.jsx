@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { API_BASE_URL } from "../config";
 
@@ -8,7 +8,31 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
     amount: "",
     note: "",
   });
+  const [accounts, setAccounts] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_BASE_URL}/getAccount`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await res.json();
+        if (result.status) {
+          setAccounts(result.data);
+        } else {
+          console.error("Failed to fetch accounts:", result.message);
+        }
+      } catch (error) {
+        console.error("Error fetching accounts:", error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +77,7 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
         onSubmit(result.data);
       } else {
         Swal.fire({
-           toast: true,
+          toast: true,
           icon: "error",
           title: "Error",
           position: "top-end",
@@ -80,14 +104,20 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
         <label className="block text-sm font-medium text-gray-700">
           Account Name
         </label>
-        <input
-          type="text"
+        <select
           name="name"
           value={form.name}
           onChange={handleChange}
           required
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
-        />
+        >
+          <option value="">-- select account --</option>
+          {accounts.map((acc) => (
+            <option key={acc.account_id} value={acc.account_name}>
+              {acc.account_name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700">
@@ -123,9 +153,9 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
         <button
           type="submit"
           disabled={submitting}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
         >
-          {submitting ? "Saving..." : "Save"}
+          {submitting ? "Saving..." : "Add"}
         </button>
       </div>
     </form>
