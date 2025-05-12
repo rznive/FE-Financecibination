@@ -3,9 +3,9 @@
 - [x] Landing Page
 - [x] Login Page
 - [x] Register Page
+- [x] Dashboard Page
+- [x] API Integration Features
 
 ## To-Do
-- [ ] Dashboard Page
-- [ ] API Integration Features
 - [ ] Testing and Debugging
 - [ ] Deployment
