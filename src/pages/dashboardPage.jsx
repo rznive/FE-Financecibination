@@ -1,14 +1,60 @@
-// dashboardPage.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, TrendingUp, TrendingDown, Wallet, X } from "lucide-react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import TransactionList from "../components/TransactionList";
+import MutationForm from "../components/MutationForm";
+import { API_BASE_URL } from "../config";
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
-  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [showAddMutation, setShowAddMutation] = useState(false);
+  const [mutationType, setMutationType] = useState(null);
+  const [mutations, setMutations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    fetchMutations();
+  }, []);
+
+  async function fetchMutations() {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE_URL}/mutasi`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await res.json();
+      if (result.status) {
+        setMutations(result.data);
+      } else {
+        console.error("Failed to fetch mutations:", result.message);
+      }
+    } catch (err) {
+      console.error("Error fetching mutations:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleAddMutation = (newMutation) => {
+    setMutations((prev) => [newMutation, ...prev]);
+    setShowAddMutation(false);
+  };
+
+  const totalIncome = mutations
+    .filter((m) => m.mutation_type === "masuk")
+    .reduce((sum, m) => sum + m.amount, 0);
+
+  const totalExpenses = mutations
+    .filter((m) => m.mutation_type === "keluar")
+    .reduce((sum, m) => sum + m.amount, 0);
+
+  const currentBalance = totalIncome - totalExpenses;
+
+  const currentMutations = mutations.slice(0, 5);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -21,24 +67,27 @@ export default function DashboardPage() {
       )}
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Financial Dashboard
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900">Financial Dashboard</h1>
               <div className="mt-4 md:mt-0 flex space-x-3">
                 <button
-                  onClick={() => setShowAddIncomeModal(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  onClick={() => {
+                    setMutationType("masuk");
+                    setShowAddMutation(true);
+                  }}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Income
                 </button>
                 <button
-                  onClick={() => setShowAddExpenseModal(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  onClick={() => {
+                    setMutationType("keluar");
+                    setShowAddMutation(true);
+                  }}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Expense
@@ -49,44 +98,51 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <Card
                 title="Total Income"
-                value={0}
+                value={totalIncome}
                 icon={<TrendingUp className="h-6 w-6 text-green-600" />}
                 color="green"
               />
               <Card
                 title="Total Expenses"
-                value={0}
+                value={totalExpenses}
                 icon={<TrendingDown className="h-6 w-6 text-red-600" />}
                 color="red"
               />
               <Card
                 title="Current Balance"
-                value={0}
+                value={currentBalance}
                 icon={<Wallet className="h-6 w-6 text-blue-600" />}
-                color="green"
+                color={currentBalance >= 0 ? "green" : "red"}
               />
             </div>
 
-            <TransactionList />
+            {/* Inline Add Form */}
+            {showAddMutation && (
+              <div className="bg-white border rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                  </h3>
+                  <button onClick={() => setShowAddMutation(false)} className="text-gray-400 hover:text-gray-500">
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+                <MutationForm
+                  title={mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                  mutationType={mutationType}
+                  onClose={() => setShowAddMutation(false)}
+                  onSubmit={handleAddMutation}
+                />
+              </div>
+            )}
+
+            {/* Transaction Table */}
+            <div className="mt-8">
+              <TransactionList mutations={currentMutations} loading={loading} />
+            </div>
           </div>
         </main>
       </div>
-
-      {/* Modal Income */}
-      {showAddIncomeModal && (
-        <Modal
-          title="Add Income"
-          onClose={() => setShowAddIncomeModal(false)}
-        />
-      )}
-
-      {/* Modal Expense */}
-      {showAddExpenseModal && (
-        <Modal
-          title="Add Expense"
-          onClose={() => setShowAddExpenseModal(false)}
-        />
-      )}
     </div>
   );
 }
@@ -98,79 +154,7 @@ function Card({ title, value, icon, color }) {
         <div className={`p-3 rounded-full bg-${color}-100 mr-4`}>{icon}</div>
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="text-2xl font-bold text-gray-900">
-            ${value.toFixed(2)}
-          </h3>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Modal({ title, onClose }) {
-  return (
-    <div className="fixed inset-0 bg-transparent bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium text-gray-900">{title}</h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-500"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          </div>
-          <form>
-            {/* Placeholder for form inputs */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="e.g. Salary, Freelance work"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Amount ($)
-              </label>
-              <input
-                type="number"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="0.00"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date
-              </label>
-              <input
-                type="date"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                required
-              />
-            </div>
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                type="button"
-                onClick={onClose}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+          <h3 className="text-2xl font-bold text-gray-900">Rp {value.toLocaleString("id-ID")}</h3>
         </div>
       </div>
     </div>
