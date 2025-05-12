@@ -3,7 +3,7 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
 import DashboardPage from "./pages/dashboardPage";
-import MutasiPage from "./pages/MutasiPage";
+import MutasiPage from "./pages/mutasiPage";
 
 const RouteList = [
   {
