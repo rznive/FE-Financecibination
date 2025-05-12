@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import { Link } from "react-router-dom";
-import { Home, LogOut } from "lucide-react";
+import { Home, LogOut, Timer } from "lucide-react";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
@@ -17,6 +17,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           >
             <Home className="mr-3 h-5 w-5" />
             Dashboard
+          </Link>
+          <Link
+            to="/showMutasi"
+            className="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-green-50 text-green-700"
+          >
+            <Timer className="mr-3 h-5 w-5" />
+            Show Mutasi
           </Link>
         </nav>
       </div>

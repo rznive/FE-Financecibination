@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Plus, TrendingUp, TrendingDown, Wallet, X } from "lucide-react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import TransactionList from "../components/TransactionList";
-import MutationForm from "../components/MutationForm";
+import TransactionList from "../components/MutationForm";
+import MutationForm from "../components/TransactionForm";
 import { API_BASE_URL } from "../config";
 
 export default function DashboardPage() {
@@ -12,7 +12,7 @@ export default function DashboardPage() {
   const [mutationType, setMutationType] = useState(null);
   const [mutations, setMutations] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     fetchMutations();
   }, []);
@@ -39,10 +39,10 @@ export default function DashboardPage() {
     }
   }
 
-  const handleAddMutation = (newMutation) => {
-    setMutations((prev) => [newMutation, ...prev]);
-    setShowAddMutation(false);
-  };
+  const handleAddMutation = async (newMutation) => {
+  setShowAddMutation(false);
+  await fetchMutations(); 
+};
 
   const totalIncome = mutations
     .filter((m) => m.mutation_type === "masuk")
@@ -70,7 +70,8 @@ export default function DashboardPage() {
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Financial Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+              </h1>
               <div className="mt-4 md:mt-0 flex space-x-3">
                 <button
                   onClick={() => {
@@ -123,12 +124,17 @@ export default function DashboardPage() {
                   <h3 className="text-lg font-medium text-gray-900">
                     {mutationType === "masuk" ? "Add Income" : "Add Expense"}
                   </h3>
-                  <button onClick={() => setShowAddMutation(false)} className="text-gray-400 hover:text-gray-500">
+                  <button
+                    onClick={() => setShowAddMutation(false)}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
                     <X className="h-6 w-6" />
                   </button>
                 </div>
                 <MutationForm
-                  title={mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                  title={
+                    mutationType === "masuk" ? "Add Income" : "Add Expense"
+                  }
                   mutationType={mutationType}
                   onClose={() => setShowAddMutation(false)}
                   onSubmit={handleAddMutation}
@@ -154,7 +160,9 @@ function Card({ title, value, icon, color }) {
         <div className={`p-3 rounded-full bg-${color}-100 mr-4`}>{icon}</div>
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="text-2xl font-bold text-gray-900">Rp {value.toLocaleString("id-ID")}</h3>
+          <h3 className="text-2xl font-bold text-gray-900">
+            Rp {value.toLocaleString("id-ID")}
+          </h3>
         </div>
       </div>
     </div>
