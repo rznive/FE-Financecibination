@@ -19,7 +19,7 @@ export default function DashboardPage() {
     fetchBalances();
   }, []);
 
-    async function fetchBalances() {
+  async function fetchBalances() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
@@ -61,9 +61,9 @@ export default function DashboardPage() {
   }
 
   const handleAddMutation = async (newMutation) => {
-  setShowAddMutation(false);
-  await fetchMutations(); 
-  await fetchBalances();
+    setShowAddMutation(false);
+    await fetchMutations();
+    await fetchBalances();
   };
 
   const totalIncome = mutations
@@ -92,8 +92,7 @@ export default function DashboardPage() {
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900"></h1>
               <div className="mt-4 md:mt-0 flex space-x-3">
                 <button
                   onClick={() => {
@@ -138,29 +137,27 @@ export default function DashboardPage() {
                 color={currentBalance >= 0 ? "green" : "red"}
               />
             </div>
-
-            {/* Inline Add Form */}
             {showAddMutation && (
-              <div className="bg-white border rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">
-                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
-                  </h3>
+              <div className="fixed inset-0 z-40 flex items-center justify-center bg-transparent bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
                   <button
                     onClick={() => setShowAddMutation(false)}
-                    className="text-gray-400 hover:text-gray-500"
+                    className="absolute top-4 right-4 text-gray hover:text-gray-600"
                   >
                     <X className="h-6 w-6" />
                   </button>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-900">
+                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                  </h3>
+                  <MutationForm
+                    title={
+                      mutationType === "masuk" ? "Add Income" : "Add Expense"
+                    }
+                    mutationType={mutationType}
+                    onClose={() => setShowAddMutation(false)}
+                    onSubmit={handleAddMutation}
+                  />
                 </div>
-                <MutationForm
-                  title={
-                    mutationType === "masuk" ? "Add Income" : "Add Expense"
-                  }
-                  mutationType={mutationType}
-                  onClose={() => setShowAddMutation(false)}
-                  onSubmit={handleAddMutation}
-                />
               </div>
             )}
 
