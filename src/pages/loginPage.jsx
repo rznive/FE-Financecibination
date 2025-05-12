@@ -71,11 +71,11 @@ export default function LoginPage() {
             icon: "success",
             title: "Login successful!",
             showConfirmButton: false,
-            timer: 3000,
+            timer: 2000,
             timerProgressBar: true,
           });
 
-          setTimeout(() => navigate("/dashboard"), 3000);
+          setTimeout(() => navigate("/dashboard"), 2000);
         }
       } catch (error) {
         console.error("Error during login:", error);
@@ -85,7 +85,7 @@ export default function LoginPage() {
           icon: "error",
           title: "Login failed. Please try again.",
           showConfirmButton: false,
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
       }

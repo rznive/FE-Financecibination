@@ -87,11 +87,11 @@ export default function RegisterPage() {
             icon: "success",
             title: "Registration successful!",
             showConfirmButton: false,
-            timer: 3000,
+            timer: 2000,
             timerProgressBar: true,
           });
 
-          setTimeout(() => navigate("/login"), 3000);
+          setTimeout(() => navigate("/login"), 2000);
         }
       } catch (error) {
         console.error("Error during registration:", error);
@@ -101,7 +101,7 @@ export default function RegisterPage() {
           icon: "error",
           title: "Registration failed. Please try again.",
           showConfirmButton: false,
-          timer: 3000,
+          timer: 2000,
           timerProgressBar: true,
         });
       }

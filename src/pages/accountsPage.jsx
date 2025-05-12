@@ -48,7 +48,7 @@ export default function AccountsPage({ user }) {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-30 z-30 md:hidden"
+          className="fixed inset-0 bg-transparent bg-opacity-30 z-30 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -68,24 +68,44 @@ export default function AccountsPage({ user }) {
             </div>
 
             {showAddAccount && (
-              <div className="bg-white border border-gray-100 rounded-lg shadow-md p-6 mb-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Add Account</h3>
-                  <button
-                    onClick={() => setShowAddAccount(false)}
-                    className="text-gray-400 hover:text-gray-500"
-                  >
-                    <X className="h-6 w-6" />
-                  </button>
+              <>
+                {/* Modal Overlay */}
+                <div
+                  className="fixed inset-0 bg-transparent bg-opacity-40 z-40"
+                  onClick={() => setShowAddAccount(false)}
+                />
+
+                {/* Modal Content */}
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-xl w-full max-w-md p-6 relative">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Add Account
+                      </h3>
+                      <button
+                        onClick={() => setShowAddAccount(false)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        <X className="h-6 w-6" />
+                      </button>
+                    </div>
+                    <AccountsForm
+                      onAccountAdded={handleAccountAdded}
+                      onClose={() => setShowAddAccount(false)}
+                    />
+                  </div>
                 </div>
-                <AccountsForm onAccountAdded={handleAccountAdded} />
-              </div>
+              </>
             )}
 
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Bank Accounts</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Bank Accounts
+              </h2>
               {loading ? (
-                <div className="text-sm text-gray-500">Loading, Fetching...</div>
+                <div className="text-sm text-gray-500">
+                  Loading, Fetching...
+                </div>
               ) : accounts.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
@@ -107,9 +127,9 @@ export default function AccountsPage({ user }) {
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-500">
                             {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                minimumFractionDigits: 0,
+                              style: "currency",
+                              currency: "IDR",
+                              minimumFractionDigits: 0,
                             }).format(account.saldo)}
                           </td>
                         </tr>
@@ -118,7 +138,9 @@ export default function AccountsPage({ user }) {
                   </table>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">No accounts have been added yet.</p>
+                <p className="text-sm text-gray-500">
+                  No accounts have been added yet.
+                </p>
               )}
             </div>
           </div>
