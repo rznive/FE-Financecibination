@@ -1,7 +1,8 @@
 // routeList.jsx
 import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
-import HomePage from "./pages/homePage"; // Halaman utama Anda
+import HomePage from "./pages/homePage";
+import DashboardPage from "./pages/dashboardPage";
 
 const RouteList = [
   {
@@ -15,6 +16,10 @@ const RouteList = [
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardPage />,
   },
 ];
 

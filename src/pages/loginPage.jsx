@@ -62,6 +62,7 @@ export default function LoginPage() {
           formData
         );
         console.log("API Response:", response);
+        localStorage.setItem("token", response.data.token);
 
         if (response.data.status) {
           Swal.fire({
