@@ -205,7 +205,7 @@ export default function TotalTransactionPage() {
     setLoading(false);
     setShowManualResult(true);
     setShowManualFilter(false);
-    // ✅ Tampilkan notifikasi sukses setelah semua fetch selesai
+
     Swal.fire({
       icon: "success",
       toast: true,

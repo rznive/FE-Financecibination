@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, LogIn, Mail, Lock, Dot } from "lucide-react";
 import { API_BASE_URL } from "../config";
@@ -17,6 +17,12 @@ export default function LoginPage() {
   });
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({

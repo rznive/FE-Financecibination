@@ -8,7 +8,6 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       {" "}
-      {/* Bungkus aplikasi dengan BrowserRouter */}
       <App />
     </BrowserRouter>
   </StrictMode>

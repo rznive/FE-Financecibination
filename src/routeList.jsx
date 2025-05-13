@@ -1,4 +1,3 @@
-// routeList.jsx
 import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
@@ -6,6 +5,7 @@ import DashboardPage from "./pages/dashboardPage";
 import MutasiPage from "./pages/mutasiPage";
 import AccountsPage from "./pages/accountsPage";
 import TotalTransactionPage from "./pages/totalTransactionPage";
+import ProtectedRoute from "./middleware/protectedRoute";
 
 const RouteList = [
   {
@@ -22,20 +22,36 @@ const RouteList = [
   },
   {
     path: "/dashboard",
-    element: <DashboardPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/showMutasi",
-    element: <MutasiPage />,
+    element: (
+      <ProtectedRoute>
+        <MutasiPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/showAccounts",
-    element: <AccountsPage />,
+    element: (
+      <ProtectedRoute>
+        <AccountsPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/totalTransaction",
-    element: <TotalTransactionPage />,
-  }
+    element: (
+      <ProtectedRoute>
+        <TotalTransactionPage />
+      </ProtectedRoute>
+    ),
+  },
 ];
 
 export default RouteList;
