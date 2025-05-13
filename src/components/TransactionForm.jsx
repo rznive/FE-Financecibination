@@ -68,9 +68,9 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
         Swal.fire({
           toast: true,
           icon: "success",
-          title: "Success",
+          title: "Success!",
           position: "top-end",
-          text: mutationType === "masuk" ? "Income added!" : "Expense added!",
+          text: mutationType === "masuk" ? "Income Added!" : "Expense Added!",
           timer: 2000,
           showConfirmButton: false,
         });
@@ -134,9 +134,9 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
           required
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
         >
-          <option value="">-- select account --</option>
+          <option value="" style={{ fontStyle: 'italic' }}>-- Select Account --</option>
           {accounts.map((acc) => (
-            <option key={acc.account_id} value={acc.account_name}>
+            <option key={acc.account_id} value={acc.account_name} style={{ fontStyle: 'italic' }}>
               {acc.account_name}
             </option>
           ))}

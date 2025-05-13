@@ -1,8 +1,9 @@
+// LoginPage.jsx
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, LogIn, Mail, Lock, Dot } from "lucide-react";
+import { Eye, EyeOff, LogIn, Mail, Lock } from "lucide-react";
 import { API_BASE_URL } from "../config";
 
 export default function LoginPage() {
@@ -23,6 +24,7 @@ export default function LoginPage() {
       navigate("/dashboard");
     }
   }, []);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -75,7 +77,7 @@ export default function LoginPage() {
             toast: true,
             position: "top-end",
             icon: "success",
-            title: "Login successful!",
+            title: "Login Successful!",
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
@@ -106,6 +108,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-green-50 via-teal-50 to-blue-50">
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-teal-600 justify-center items-center p-12">
         <div className="max-w-md text-white">
+          <img src="/public/ilustrasi-1.png" alt="Finance Illustration" className="mb-6" />
           <h2 className="text-4xl font-bold mb-6">Manage Your Finances</h2>
           <p className="text-lg mb-8">
             Track your expenses, monitor your budget, and take control of your
@@ -116,8 +119,15 @@ export default function LoginPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
           <div className="text-center">
-            <div className="flex justify-center"></div>
-            <h2 className="mt-4 text-3xl font-bold text-gray-900">Sign in</h2>
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <img
+                src="/public/financecibination.png"
+                alt="Financecibination Logo"
+                className="h-20 w-auto"
+              />
+            </div>
+            <h2 className="mt-4 text-3xl font-bold text-gray-900">Sign In</h2>
             <p className="mt-2 text-sm text-gray-600">
               Access your financial dashboard
             </p>
@@ -130,7 +140,7 @@ export default function LoginPage() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Email address
+                  Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -219,7 +229,7 @@ export default function LoginPage() {
                 to="/register"
                 className="font-medium text-green-600 hover:text-green-500 transition-colors duration-300"
               >
-                Sign up
+                Sign up here!
               </Link>
             </p>
           </div>

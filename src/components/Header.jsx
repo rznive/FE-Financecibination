@@ -1,4 +1,3 @@
-// Header.jsx
 import { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { User, Menu } from "lucide-react";
@@ -28,6 +27,14 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
           >
             <Menu className="h-5 w-5 text-gray-500" />
           </button>
+          {/* Logo */}
+          <div className="mr-3">
+            <img
+              src="/public/financecibination.png"
+              alt="Financecibination Logo"
+              className="h-8 w-auto"
+            />
+          </div>
           <div className="flex items-center">
             <span className="text-lg font-bold text-gray-900">Financecibination</span>
           </div>

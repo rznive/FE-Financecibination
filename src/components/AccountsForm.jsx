@@ -47,7 +47,7 @@ export default function AccountsForm({ onAccountAdded, onClose }) {
           toast: true,
           icon: "success",
           title: "Success",
-          text: "Account added successfully",
+          text: "Account Added Successfully!",
           position: "top-end",
           timer: 2000,
           showConfirmButton: false,

@@ -85,7 +85,7 @@ export default function RegisterPage() {
             toast: true,
             position: "top-end",
             icon: "success",
-            title: "Registration successful!",
+            title: "Registration Successful!",
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
@@ -117,9 +117,16 @@ export default function RegisterPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-8 order-2 md:order-1">
         <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
           <div className="text-center">
-            <div className="flex justify-center"></div>
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <img
+                src="/public/financecibination.png"
+                alt="Financecibination Logo"
+                className="h-20 w-auto"
+              />
+            </div>
             <h2 className="mt-4 text-3xl font-bold text-gray-900">
-              Create account
+              Create Account
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               Start tracking your finances today
@@ -133,7 +140,7 @@ export default function RegisterPage() {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Full name
+                  Full Name
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -159,13 +166,12 @@ export default function RegisterPage() {
                   </p>
                 )}
               </div>
-
               <div>
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Email address
+                  Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -285,7 +291,7 @@ export default function RegisterPage() {
                 to="/login"
                 className="font-medium text-green-600 hover:text-green-500 transition-colors duration-300"
               >
-                Sign in
+                Sign in here!
               </Link>
             </p>
           </div>
@@ -294,6 +300,7 @@ export default function RegisterPage() {
       
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-teal-600 justify-center items-center p-12 order-1 md:order-2">
         <div className="max-w-md text-white">
+          <img src="/public/ilustrasi-2.png" alt="Finance Illustration" className="mb-6" />
           <h2 className="text-4xl font-bold mb-6">
             Take Control of Your Finances
           </h2>

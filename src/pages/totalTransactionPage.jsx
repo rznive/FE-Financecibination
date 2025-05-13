@@ -209,9 +209,9 @@ export default function TotalTransactionPage() {
     Swal.fire({
       icon: "success",
       toast: true,
-      title: "Berhasil!",
+      title: "Success",
       position: "top-end",
-      text: "Filter data berhasil dimuat .",
+      text: "Transaction Data Loaded!",
       showConfirmButton: false,
       timer: 2000,
       timerProgressBar: true,

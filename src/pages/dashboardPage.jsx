@@ -19,7 +19,7 @@ export default function DashboardPage() {
     fetchBalances();
   }, []);
 
-  async function fetchBalances() {
+    async function fetchBalances() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
@@ -61,9 +61,9 @@ export default function DashboardPage() {
   }
 
   const handleAddMutation = async (newMutation) => {
-    setShowAddMutation(false);
-    await fetchMutations();
-    await fetchBalances();
+  setShowAddMutation(false);
+  await fetchMutations(); 
+  await fetchBalances();
   };
 
   const totalIncome = mutations
@@ -92,16 +92,31 @@ export default function DashboardPage() {
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900"></h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+              </h1>
               <div className="mt-4 md:mt-0 flex space-x-3">
-                <button
+              <button
                   onClick={() => {
                     setMutationType("masuk");
                     setShowAddMutation(true);
                   }}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-trending-up-icon lucide-trending-up h-4 w-4 mr-2"
+                  >
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                    <polyline points="16 7 22 7 22 13" />
+                  </svg>
                   Add Income
                 </button>
                 <button
@@ -111,7 +126,21 @@ export default function DashboardPage() {
                   }}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-trending-down-icon lucide-trending-down h-4 w-4 mr-2"
+                  >
+                    <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
+                    <polyline points="16 17 22 17 22 11" />
+                  </svg>
                   Add Expense
                 </button>
               </div>
@@ -137,27 +166,29 @@ export default function DashboardPage() {
                 color={currentBalance >= 0 ? "green" : "red"}
               />
             </div>
+
+            {/* Inline Add Form */}
             {showAddMutation && (
-              <div className="fixed inset-0 z-40 flex items-center justify-center bg-transparent bg-opacity-50">
-                <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
+              <div className="bg-white border rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                  </h3>
                   <button
                     onClick={() => setShowAddMutation(false)}
-                    className="absolute top-4 right-4 text-gray hover:text-gray-600"
+                    className="text-gray-400 hover:text-gray-500"
                   >
                     <X className="h-6 w-6" />
                   </button>
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
-                  </h3>
-                  <MutationForm
-                    title={
-                      mutationType === "masuk" ? "Add Income" : "Add Expense"
-                    }
-                    mutationType={mutationType}
-                    onClose={() => setShowAddMutation(false)}
-                    onSubmit={handleAddMutation}
-                  />
                 </div>
+                <MutationForm
+                  title={
+                    mutationType === "masuk" ? "Add Income" : "Add Expense"
+                  }
+                  mutationType={mutationType}
+                  onClose={() => setShowAddMutation(false)}
+                  onSubmit={handleAddMutation}
+                />
               </div>
             )}
 
