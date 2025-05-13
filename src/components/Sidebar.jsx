@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, LogOut, FileText, DollarSign, Layers } from "lucide-react";
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
+export default function Sidebar({ sidebarOpen}) {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
