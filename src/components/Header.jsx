@@ -30,7 +30,7 @@ export default function Header({ sidebarOpen, setSidebarOpen }) {
           {/* Logo */}
           <div className="mr-3">
             <img
-              src="/public/financecibination.png"
+              src="/financecibination.png"
               alt="Financecibination Logo"
               className="h-8 w-auto"
             />
