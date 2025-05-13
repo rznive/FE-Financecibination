@@ -7,7 +7,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <img
-            src="public/financecibination.png"
+            src="/financecibination.png"
             alt="Financecibination Logo"
             className="h-8 w-8 object-contain"
           />
@@ -55,7 +55,7 @@ const HomePage = () => {
                 </div>
                 <div className="h-48 mb-6 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
                   <img
-                    src="public/ilustrasi-3.png"
+                    src="/ilustrasi-3.png"
                     alt="Finance Illustration"
                     className="h-full object-contain"
                   />

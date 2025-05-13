@@ -108,7 +108,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-green-50 via-teal-50 to-blue-50">
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-teal-600 justify-center items-center p-12">
         <div className="max-w-md text-white">
-          <img src="/public/ilustrasi-1.png" alt="Finance Illustration" className="mb-6" />
+          <img src="/ilustrasi-1.png" alt="Finance Illustration" className="mb-6" />
           <h2 className="text-4xl font-bold mb-6">Manage Your Finances</h2>
           <p className="text-lg mb-8">
             Track your expenses, monitor your budget, and take control of your
@@ -122,7 +122,7 @@ export default function LoginPage() {
             {/* Logo */}
             <div className="flex justify-center mb-6">
               <img
-                src="/public/financecibination.png"
+                src="/financecibination.png"
                 alt="Financecibination Logo"
                 className="h-20 w-auto"
               />

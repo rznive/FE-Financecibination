@@ -120,7 +120,7 @@ export default function RegisterPage() {
             {/* Logo */}
             <div className="flex justify-center mb-6">
               <img
-                src="/public/financecibination.png"
+                src="/financecibination.png"
                 alt="Financecibination Logo"
                 className="h-20 w-auto"
               />
@@ -300,7 +300,7 @@ export default function RegisterPage() {
       
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-teal-600 justify-center items-center p-12 order-1 md:order-2">
         <div className="max-w-md text-white">
-          <img src="/public/ilustrasi-2.png" alt="Finance Illustration" className="mb-6" />
+          <img src="/ilustrasi-2.png" alt="Finance Illustration" className="mb-6" />
           <h2 className="text-4xl font-bold mb-6">
             Take Control of Your Finances
           </h2>
