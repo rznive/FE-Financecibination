@@ -5,6 +5,7 @@ import HomePage from "./pages/homePage";
 import DashboardPage from "./pages/dashboardPage";
 import MutasiPage from "./pages/mutasiPage";
 import AccountsPage from "./pages/accountsPage";
+import TotalTransactionPage from "./pages/totalTransactionPage";
 
 const RouteList = [
   {
@@ -31,6 +32,10 @@ const RouteList = [
     path: "/showAccounts",
     element: <AccountsPage />,
   },
+  {
+    path: "/totalTransaction",
+    element: <TotalTransactionPage />,
+  }
 ];
 
 export default RouteList;

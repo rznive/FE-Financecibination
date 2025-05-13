@@ -22,7 +22,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       icon: <Layers className="mr-3 h-5 w-5" />,
     },
     {
-      to: "/total-transactions",
+      to: "/totalTransaction",
       label: "Total Transactions",
       icon: <FileText className="mr-3 h-5 w-5" />,
     },
