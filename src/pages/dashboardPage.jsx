@@ -19,7 +19,7 @@ export default function DashboardPage() {
     fetchBalances();
   }, []);
 
-    async function fetchBalances() {
+  async function fetchBalances() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
@@ -61,9 +61,9 @@ export default function DashboardPage() {
   }
 
   const handleAddMutation = async (newMutation) => {
-  setShowAddMutation(false);
-  await fetchMutations(); 
-  await fetchBalances();
+    setShowAddMutation(false);
+    await fetchMutations();
+    await fetchBalances();
   };
 
   const totalIncome = mutations
@@ -92,10 +92,9 @@ export default function DashboardPage() {
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900"></h1>
               <div className="mt-4 md:mt-0 flex space-x-3">
-              <button
+                <button
                   onClick={() => {
                     setMutationType("masuk");
                     setShowAddMutation(true);
@@ -117,7 +116,7 @@ export default function DashboardPage() {
                     <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
                     <polyline points="16 7 22 7 22 13" />
                   </svg>
-                  Add Income
+                  Pemasukan
                 </button>
                 <button
                   onClick={() => {
@@ -141,7 +140,7 @@ export default function DashboardPage() {
                     <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
                     <polyline points="16 17 22 17 22 11" />
                   </svg>
-                  Add Expense
+                  Pengeluaran
                 </button>
               </div>
             </div>
@@ -172,7 +171,7 @@ export default function DashboardPage() {
               <div className="bg-white border rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-medium text-gray-900">
-                    {mutationType === "masuk" ? "Add Income" : "Add Expense"}
+                    {mutationType === "masuk" ? "Pemasukan" : "Pengeluaran"}
                   </h3>
                   <button
                     onClick={() => setShowAddMutation(false)}
@@ -182,9 +181,7 @@ export default function DashboardPage() {
                   </button>
                 </div>
                 <MutationForm
-                  title={
-                    mutationType === "masuk" ? "Add Income" : "Add Expense"
-                  }
+                  title={mutationType === "masuk" ? "Pemasukan" : "Pengeluaran"}
                   mutationType={mutationType}
                   onClose={() => setShowAddMutation(false)}
                   onSubmit={handleAddMutation}

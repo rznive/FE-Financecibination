@@ -58,7 +58,6 @@ export default function MutasiPage() {
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="max-w-7xl mx-auto">
-
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Recent Transactions
@@ -106,8 +105,8 @@ export default function MutasiPage() {
                                 }`}
                               >
                                 {mutation.mutation_type === "masuk"
-                                  ? "Income"
-                                  : "Expense"}
+                                  ? "Pemasukan"
+                                  : "Pengeluaran"}
                               </span>
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-500">
