@@ -5,6 +5,15 @@ import Sidebar from "../components/Sidebar";
 import TransactionList from "../components/MutationForm";
 import MutationForm from "../components/TransactionForm";
 import { API_BASE_URL } from "../config";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,10 +22,12 @@ export default function DashboardPage() {
   const [mutations, setMutations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState([]);
+  const [dailyIncomeData, setDailyIncomeData] = useState([]);
 
   useEffect(() => {
     fetchMutations();
     fetchBalances();
+    fetchDailyIncome();
   }, []);
 
   async function fetchBalances() {
@@ -57,6 +68,29 @@ export default function DashboardPage() {
       console.error("Error fetching mutations:", err);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function fetchDailyIncome() {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `${API_BASE_URL}/finance/autototal-pemasukan-harian`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await res.json();
+      if (result.status) {
+        setDailyIncomeData(result.data); // asumsi: [{ tanggal: "2025-05-01", total_pemasukan: 100000 }]
+      } else {
+        console.error("Gagal fetch pemasukan harian:", result.message);
+      }
+    } catch (err) {
+      console.error("Error fetching daily income:", err);
     }
   }
 
@@ -192,6 +226,29 @@ export default function DashboardPage() {
             {/* Transaction Table */}
             <div className="mt-8">
               <TransactionList mutations={currentMutations} loading={loading} />
+            </div>
+            {/* Daily Income Chart */}
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-4">Pemasukan Harian</h2>
+              <div className="bg-white p-4 rounded-lg shadow-md w-full h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={dailyIncomeData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="tanggal" />
+                    <YAxis />
+                    <Tooltip
+                      formatter={(value) =>
+                        `Rp ${value.toLocaleString("id-ID")}`
+                      }
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="total_pemasukan"
+                      stroke="#16a34a"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </main>
