@@ -197,26 +197,30 @@ export default function DashboardPage() {
               />
             </div>
 
-            {/* Inline Add Form */}
+            {/* Modal Add Form */}
             {showAddMutation && (
-              <div className="bg-white border rounded-lg shadow-md max-w-3xl w-full mx-auto mb-6 p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">
-                    {mutationType === "masuk" ? "Pemasukan" : "Pengeluaran"}
-                  </h3>
+              <div className="fixed inset-0 z-40 flex items-center justify-center">
+                <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-6 relative">
                   <button
                     onClick={() => setShowAddMutation(false)}
-                    className="text-gray-400 hover:text-gray-500"
+                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
                   >
                     <X className="h-6 w-6" />
                   </button>
+                  <h3 className="text-lg font-semibold mb-4">
+                    {mutationType === "masuk"
+                      ? "Tambah Pemasukan"
+                      : "Tambah Pengeluaran"}
+                  </h3>
+                  <MutationForm
+                    title={
+                      mutationType === "masuk" ? "Pemasukan" : "Pengeluaran"
+                    }
+                    mutationType={mutationType}
+                    onClose={() => setShowAddMutation(false)}
+                    onSubmit={handleAddMutation}
+                  />
                 </div>
-                <MutationForm
-                  title={mutationType === "masuk" ? "Pemasukan" : "Pengeluaran"}
-                  mutationType={mutationType}
-                  onClose={() => setShowAddMutation(false)}
-                  onSubmit={handleAddMutation}
-                />
               </div>
             )}
 
