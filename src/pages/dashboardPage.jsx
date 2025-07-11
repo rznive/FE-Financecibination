@@ -235,9 +235,22 @@ export default function DashboardPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={dailyIncomeData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="tanggal" />
-                    <YAxis />
+                    <XAxis
+                      dataKey="tanggal"
+                      tick={{ fontSize: 11 }}
+                      tickFormatter={(tanggal) => {
+                        const [year, month, day] = tanggal.split("-");
+                        return `${parseInt(month)} / ${parseInt(day)}`;
+                      }}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 11, fill: "#4B5563" }}
+                      tickFormatter={(value) =>
+                        `${value.toLocaleString("id-ID")}`
+                      }
+                    />
                     <Tooltip
+                      labelFormatter={(label) => formatTanggalIndo(label)}
                       formatter={(value, name) => [
                         `Rp ${value.toLocaleString("id-ID")}`,
                         name === "total_pemasukan"
@@ -286,4 +299,23 @@ function Card({ title, value, icon, color }) {
       </div>
     </div>
   );
+}
+
+function formatTanggalIndo(dateStr) {
+  const bulanIndo = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+  const [year, month, day] = dateStr.split("-");
+  return `${parseInt(day)} ${bulanIndo[parseInt(month) - 1]} ${year}`;
 }
