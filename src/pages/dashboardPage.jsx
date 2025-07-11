@@ -27,7 +27,7 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchMutations();
     fetchBalances();
-    fetchDailyIncome();
+    fetchDailyMutation();
   }, []);
 
   async function fetchBalances() {
@@ -71,17 +71,14 @@ export default function DashboardPage() {
     }
   }
 
-  async function fetchDailyIncome() {
+  async function fetchDailyMutation() {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `${API_BASE_URL}/finance/autototal-pemasukan-harian`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/finance/total-transaksi`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const result = await res.json();
       if (result.status) {
@@ -229,7 +226,7 @@ export default function DashboardPage() {
             </div>
             {/* Daily Income Chart */}
             <div className="mt-8">
-              <h2 className="text-lg font-semibold mb-4">Pemasukan Harian</h2>
+              <h2 className="text-lg font-semibold mb-4">Total Mutasi</h2>
               <div className="bg-white p-4 rounded-lg shadow-md w-full h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={dailyIncomeData}>
@@ -237,14 +234,28 @@ export default function DashboardPage() {
                     <XAxis dataKey="tanggal" />
                     <YAxis />
                     <Tooltip
-                      formatter={(value) =>
-                        `Rp ${value.toLocaleString("id-ID")}`
-                      }
+                      formatter={(value, name) => [
+                        `Rp ${value.toLocaleString("id-ID")}`,
+                        name === "total_pemasukan"
+                          ? "Pemasukan"
+                          : "Pengeluaran",
+                      ]}
                     />
                     <Line
                       type="monotone"
                       dataKey="total_pemasukan"
+                      name="Pemasukan"
                       stroke="#16a34a"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="total_pengeluaran"
+                      name="Pengeluaran"
+                      stroke="#dc2626"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
