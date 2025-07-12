@@ -95,6 +95,7 @@ export default function DashboardPage() {
     setShowAddMutation(false);
     await fetchMutations();
     await fetchBalances();
+    await fetchDailyMutation();
   };
 
   const totalIncome = mutations
