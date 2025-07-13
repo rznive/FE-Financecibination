@@ -87,7 +87,7 @@ export default function DashboardPage() {
     }
   }
 
-  const handleAddMutation = async (newMutation) => {
+  const handleAddMutation = async () => {
     setShowAddMutation(false);
 
     // Paralel

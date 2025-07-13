@@ -10,6 +10,7 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
   });
   const [accounts, setAccounts] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [formattedAmount, setFormattedAmount] = useState("");
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -37,6 +38,23 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Format tampilan
+  const formatRupiah = (value) => {
+    if (!value) return "";
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  // fungsi handle input nominal
+  const handleAmountChange = (e) => {
+    const raw = e.target.value.replace(/\D/g, ""); // hanya angka
+    const numeric = parseInt(raw || "0", 10);
+
+    if (numeric >= 10000000000000) return;
+
+    setForm((prev) => ({ ...prev, amount: numeric }));
+    setFormattedAmount(formatRupiah(numeric));
   };
 
   const handleSubmit = async (e) => {
@@ -105,11 +123,12 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
           Amount
         </label>
         <input
-          type="number"
+          type="text"
           name="amount"
-          value={form.amount}
-          onChange={handleChange}
+          value={formattedAmount}
+          onChange={handleAmountChange}
           required
+          inputMode="numeric"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
         />
       </div>
@@ -123,7 +142,7 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
         />
       </div>
-       <div>
+      <div>
         <label className="block text-sm font-medium text-gray-700">
           Account Name
         </label>
@@ -134,9 +153,15 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
           required
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2"
         >
-          <option value="" style={{ fontStyle: 'italic' }}>-- Select Account --</option>
+          <option value="" style={{ fontStyle: "italic" }}>
+            -- Select Account --
+          </option>
           {accounts.map((acc) => (
-            <option key={acc.account_id} value={acc.account_name} style={{ fontStyle: 'italic' }}>
+            <option
+              key={acc.account_id}
+              value={acc.account_name}
+              style={{ fontStyle: "italic" }}
+            >
               {acc.account_name}
             </option>
           ))}
