@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState([]);
   const [dailyIncomeData, setDailyIncomeData] = useState([]);
+  const [chartLoading, setChartLoading] = useState(true);
 
   useEffect(() => {
     fetchMutations();
@@ -64,6 +65,7 @@ export default function DashboardPage() {
   }
 
   async function fetchDailyMutation() {
+    setChartLoading(true);
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/finance/total-transaksi`, {
@@ -80,6 +82,8 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error("Error fetching daily income:", err);
+    } finally {
+      setChartLoading(false);
     }
   }
 
@@ -222,7 +226,7 @@ export default function DashboardPage() {
               <TransactionList mutations={currentMutations} loading={loading} />
             </div>
             {/* Daily Income Chart */}
-            <DailyMutationChart data={dailyIncomeData} />
+            <DailyMutationChart data={dailyIncomeData} loading={chartLoading} />
           </div>
         </main>
       </div>

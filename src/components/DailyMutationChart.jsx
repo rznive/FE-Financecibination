@@ -28,14 +28,14 @@ function formatTanggalIndo(dateStr) {
   return `${parseInt(day)} ${bulanIndo[parseInt(month) - 1]} ${year}`;
 }
 
-export default function DailyMutationChart({ data }) {
+export default function DailyMutationChart({ data, loading }) {
   const isLoading = !data || data.length === 0;
 
   return (
     <div className="mt-8">
       <h2 className="text-lg font-semibold mb-4">Total Mutasi</h2>
       <div className="bg-white p-4 rounded-lg shadow-md w-full h-80 flex items-center justify-center">
-        {isLoading ? (
+        {loading ? (
           <div className="flex flex-col items-center">
             <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-2"></div>
             <p className="text-sm text-gray-500">Loading chart...</p>
