@@ -58,11 +58,15 @@ export default function DailyMutationChart({ data, loading }) {
               />
               <Tooltip
                 labelFormatter={(label) => formatTanggalIndo(label)}
-                formatter={(value, name) => [
-                  `Rp ${value.toLocaleString("id-ID")}`,
-                  name === "total_pemasukan" ? "Pemasukan" : "Pengeluaran",
-                ]}
+                formatter={(value, name) => {
+                  const label = name?.toLowerCase().includes("pemasukan")
+                    ? "Pemasukan"
+                    : "Pengeluaran";
+
+                  return [`Rp ${value.toLocaleString("id-ID")}`, label];
+                }}
               />
+
               <Line
                 type="monotone"
                 dataKey="total_pemasukan"
