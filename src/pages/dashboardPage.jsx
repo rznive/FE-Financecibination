@@ -89,9 +89,13 @@ export default function DashboardPage() {
 
   const handleAddMutation = async (newMutation) => {
     setShowAddMutation(false);
-    await fetchMutations();
-    await fetchBalances();
-    await fetchDailyMutation();
+
+    // Paralel
+    await Promise.all([
+      await fetchMutations(),
+      await fetchBalances(),
+      await fetchDailyMutation(),
+    ]);
   };
 
   const totalIncome = mutations
