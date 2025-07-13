@@ -92,9 +92,9 @@ export default function DashboardPage() {
 
     // Paralel
     await Promise.all([
-      await fetchMutations(),
-      await fetchBalances(),
-      await fetchDailyMutation(),
+      fetchMutations(),
+      fetchBalances(),
+      fetchDailyMutation(),
     ]);
   };
 
