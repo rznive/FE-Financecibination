@@ -77,7 +77,7 @@ export default function TransferModal({ isOpen, onClose, onSuccess }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md shadow">
         <h2 className="text-lg font-bold mb-4">Transfer Antar Akun</h2>
 
