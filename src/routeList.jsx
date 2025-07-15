@@ -5,6 +5,7 @@ import DashboardPage from "./pages/dashboardPage";
 import MutasiPage from "./pages/mutasiPage";
 import AccountsPage from "./pages/accountsPage";
 import TotalTransactionPage from "./pages/totalTransactionPage";
+import TransferPage from "./pages/TransferPage";
 import ProtectedRoute from "./middleware/protectedRoute";
 
 const RouteList = [
@@ -49,6 +50,14 @@ const RouteList = [
     element: (
       <ProtectedRoute>
         <TotalTransactionPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/riwayatTransfer",
+    element: (
+      <ProtectedRoute>
+        <TransferPage />
       </ProtectedRoute>
     ),
   },

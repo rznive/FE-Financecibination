@@ -1,7 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, LogOut, FileText, DollarSign, Layers } from "lucide-react";
+import {
+  Home,
+  LogOut,
+  FileText,
+  DollarSign,
+  Layers,
+  Repeat,
+  ArrowLeftRight, // pakai ini
+  Send,
+} from "lucide-react";
 
-export default function Sidebar({ sidebarOpen}) {
+export default function Sidebar({ sidebarOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -26,6 +35,11 @@ export default function Sidebar({ sidebarOpen}) {
       to: "/totalTransaction",
       label: "Total Transactions",
       icon: <FileText className="mr-3 h-5 w-5" />,
+    },
+    {
+      to: "/riwayatTransfer",
+      label: "Riwayat Transfer",
+      icon: <ArrowLeftRight className="mr-3 h-5 w-5" />,
     },
   ];
 
