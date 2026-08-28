@@ -105,8 +105,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-green-50 via-teal-50 to-blue-50">
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-teal-600 justify-center items-center p-12">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#eff6ff] via-[#e8f0fe] to-[#f0f9ff]">
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#3B82F6] to-[#1e3a8a] justify-center items-center p-12">
         <div className="max-w-md text-white">
           <img src="/ilustrasi-1.png" alt="Finance Illustration" className="mb-6" />
           <h2 className="text-4xl font-bold mb-6">Manage Your Finances</h2>
@@ -121,11 +121,13 @@ export default function LoginPage() {
           <div className="text-center">
             {/* Logo */}
             <div className="flex justify-center mb-6">
-              <img
-                src="/financecibination.png"
-                alt="Financecibination Logo"
-                className="h-20 w-auto"
-              />
+              <Link to="/">
+                <img
+                  src="/financecibination.png"
+                  alt="Financecibination Logo"
+                  className="h-20 w-auto cursor-pointer hover:opacity-80 transition-opacity duration-200"
+                />
+              </Link>
             </div>
             <h2 className="mt-4 text-3xl font-bold text-gray-900">Sign In</h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -157,7 +159,7 @@ export default function LoginPage() {
                       errors.email
                         ? "border-red-300 bg-red-50"
                         : "border-gray-300"
-                    } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 ease-in-out`}
+                    } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all duration-300 ease-in-out`}
                     placeholder="you@example.com"
                   />
                 </div>
@@ -188,7 +190,7 @@ export default function LoginPage() {
                       errors.password
                         ? "border-red-300 bg-red-50"
                         : "border-gray-300"
-                    } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 ease-in-out`}
+                    } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all duration-300 ease-in-out`}
                     placeholder="••••••••"
                   />
                   <button
@@ -212,10 +214,10 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transform transition-all duration-300 ease-in-out hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#3B82F6] hover:bg-[#2563EB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B82F6] transform transition-all duration-300 ease-in-out hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <LogIn className="h-5 w-5 text-green-300 group-hover:text-green-200" />
+                  <LogIn className="h-5 w-5 text-[#93c5fd] group-hover:text-[#bfdbfe]" />
                 </span>
                 Sign in
               </button>
@@ -227,7 +229,7 @@ export default function LoginPage() {
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="font-medium text-green-600 hover:text-green-500 transition-colors duration-300"
+                className="font-medium text-[#3B82F6] hover:text-[#2563EB] transition-colors duration-300"
               >
                 Sign up here!
               </Link>
