@@ -16,7 +16,7 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
     const fetchAccounts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${API_BASE_URL}/getAccount`, {
+        const res = await fetch(`${API_BASE_URL}/getSaldo`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

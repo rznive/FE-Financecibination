@@ -1,4 +1,4 @@
-import DailyMutationChart from "../DailyMutationChart";
+import DailyMutationChart from "./DailyMutationChart";
 
 export default function FinancialActivityChart({
   chartData = [],
