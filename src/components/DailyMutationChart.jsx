@@ -157,7 +157,7 @@ export default function DailyMutationChart({ data = [], loading = false }) {
                     </div>
 
                     <div className="flex items-center justify-between gap-4 text-slate-700 pt-1 border-t border-slate-100 font-semibold">
-                      <span>Net Cashflow:</span>
+                      <span>Selisih:</span>
                       <span
                         className={
                           net >= 0
