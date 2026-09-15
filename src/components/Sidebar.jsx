@@ -3,12 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   LogOut,
-  FileText,
   DollarSign,
   Layers,
-  ArrowLeftRight,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -44,32 +43,22 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       label: "Akun Rekening",
       icon: <Layers className="w-5 h-5" />,
     },
-    {
-      to: "/totalTransaction",
-      label: "Total Transactions",
-      icon: <FileText className="w-5 h-5" />,
-    },
-    {
-      to: "/riwayatTransfer",
-      label: "Riwayat Transfer",
-      icon: <ArrowLeftRight className="w-5 h-5" />,
-    },
   ];
 
   return (
     <aside
-      className={`relative ${
-        isCollapsed ? "w-20" : "w-64"
-      } bg-white border-r border-slate-200 flex flex-col justify-between flex-shrink-0 h-screen fixed md:sticky top-0 z-40 transform ${
+      className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between h-full bg-white border-r border-slate-200 shadow-2xl lg:shadow-none transition-transform duration-300 ease-in-out lg:static lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-30 select-none flex-shrink-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } md:translate-x-0 transition-all duration-300 ease-in-out shadow-lg md:shadow-none`}
+      } ${
+        isCollapsed ? "lg:w-20" : "lg:w-[264px]"
+      } w-[280px] sm:w-[300px] max-w-[85vw]`}
       data-purpose="sidebar-navigation"
     >
-      {/* Edge Collapse Toggle Button (Desktop) */}
+      {/* Edge Collapse Toggle Button (Desktop Only >= 1024px) */}
       <button
         onClick={toggleCollapse}
         type="button"
-        className="hidden md:flex absolute -right-3 top-7 w-6 h-6 bg-white border border-slate-200 rounded-full items-center justify-center text-slate-500 hover:text-emerald-600 hover:border-emerald-300 shadow-sm z-50 cursor-pointer transition-transform hover:scale-110"
+        className="hidden lg:flex absolute -right-3 top-7 w-6 h-6 bg-white border border-slate-200 hover:border-emerald-400 rounded-full items-center justify-center text-slate-400 hover:text-emerald-600 shadow-xs z-50 cursor-pointer transition-all duration-200 hover:scale-110"
         title={isCollapsed ? "Perluas Sidebar" : "Ciutkan Sidebar"}
         aria-label="Toggle collapse sidebar"
       >
@@ -81,35 +70,55 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       </button>
 
       <div className="flex flex-col flex-1 min-h-0">
-        {/* Logo Area */}
+        {/* Logo & Brand Header */}
         <div
-          className={`h-20 flex items-center border-b border-slate-100 flex-shrink-0 transition-all ${
-            isCollapsed ? "justify-center px-2" : "px-6"
+          className={`h-20 flex items-center justify-between border-b border-slate-100 flex-shrink-0 transition-all ${
+            isCollapsed ? "lg:justify-center px-3" : "px-5"
           }`}
         >
           <div
-            className="flex items-center gap-3 cursor-pointer select-none"
+            className="flex items-center gap-3 cursor-pointer select-none min-w-0"
             onClick={() => isCollapsed && toggleCollapse()}
             title={isCollapsed ? "Klik untuk memperluas sidebar" : ""}
           >
-            <img
-              src="/financecibination.png"
-              alt="Financecibination Logo"
-              className="h-8 w-auto flex-shrink-0"
-            />
-            {!isCollapsed && (
-              <span className="font-bold text-xl tracking-tight text-slate-900 whitespace-nowrap">
+            <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center p-1.5 flex-shrink-0 shadow-xs">
+              <img
+                src="/financecibination.png"
+                alt="Financecibination Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            {/* Show on mobile & tablet OR when not collapsed on desktop */}
+            <div
+              className={`flex flex-col min-w-0 pr-1 ${
+                isCollapsed ? "lg:hidden" : "flex"
+              }`}
+            >
+              <span className="font-extrabold text-[17px] tracking-tight text-slate-900 truncate leading-tight">
                 Financecibination
               </span>
-            )}
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                Manajemen Keuangan
+              </span>
+            </div>
           </div>
+
+          {/* Close button on mobile and tablet */}
+          <button
+            type="button"
+            onClick={() => setSidebarOpen && setSidebarOpen(false)}
+            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors ml-2 cursor-pointer active:scale-95"
+            aria-label="Close sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation Links */}
         <nav
           aria-label="Main Navigation"
           className={`p-3 space-y-1.5 flex-1 overflow-y-auto ${
-            isCollapsed ? "flex flex-col items-center" : ""
+            isCollapsed ? "lg:flex lg:flex-col lg:items-center" : ""
           }`}
         >
           {menuItems.map((item) => {
@@ -120,13 +129,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to={item.to}
                 title={item.label}
                 onClick={() => setSidebarOpen && setSidebarOpen(false)}
-                className={`flex items-center rounded-xl transition-colors group ${
+                className={`flex items-center rounded-xl transition-all duration-150 group ${
                   isCollapsed
-                    ? "w-12 h-12 justify-center"
-                    : "gap-3.5 px-4 py-3 text-sm w-full"
+                    ? "lg:w-11 lg:h-11 lg:justify-center gap-3 px-3.5 py-2.5 text-sm w-full"
+                    : "gap-3 px-3.5 py-2.5 text-sm w-full"
                 } ${
                   isActive
-                    ? "bg-emerald-50 text-emerald-700 font-semibold"
+                    ? "bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100/80 shadow-xs"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium"
                 }`}
               >
@@ -139,9 +148,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 >
                   {item.icon}
                 </span>
-                {!isCollapsed && (
-                  <span className="whitespace-nowrap">{item.label}</span>
-                )}
+                <span
+                  className={`whitespace-nowrap tracking-tight ${
+                    isCollapsed ? "lg:hidden" : "inline"
+                  }`}
+                >
+                  {item.label}
+                </span>
               </Link>
             );
           })}
@@ -157,14 +170,20 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           }}
           type="button"
           title="Sign Out"
-          className={`flex items-center text-red-600 rounded-xl hover:bg-red-50 transition-colors cursor-pointer ${
+          className={`flex items-center text-rose-600 hover:text-rose-700 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer ${
             isCollapsed
-              ? "w-12 h-12 justify-center"
-              : "w-full gap-3.5 px-4 py-3 text-sm font-semibold"
+              ? "lg:w-11 lg:h-11 lg:justify-center w-full gap-3 px-3.5 py-2.5 text-sm font-semibold"
+              : "w-full gap-3 px-3.5 py-2.5 text-sm font-semibold"
           }`}
         >
-          <LogOut className="w-5 h-5 text-red-500 flex-shrink-0" />
-          {!isCollapsed && <span className="whitespace-nowrap">Sign Out</span>}
+          <LogOut className="w-4 h-4 text-rose-500 flex-shrink-0" />
+          <span
+            className={`whitespace-nowrap ${
+              isCollapsed ? "lg:hidden" : "inline"
+            }`}
+          >
+            Sign Out
+          </span>
         </button>
       </div>
     </aside>

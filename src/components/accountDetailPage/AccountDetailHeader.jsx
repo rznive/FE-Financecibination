@@ -1,32 +1,46 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowLeftRight, Edit3 } from "lucide-react";
+import { ArrowLeft, ArrowLeftRight, Edit3, Menu } from "lucide-react";
 
 export default function AccountDetailHeader({
   account,
   currentUser,
   onEditRekening,
   onOpenTransfer,
+  sidebarOpen,
+  setSidebarOpen,
 }) {
   return (
     <>
       {/* TopBar Header with Breadcrumbs */}
-      <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-3.5 flex items-center justify-between sticky top-0 z-20">
-        {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-400 uppercase overflow-x-auto whitespace-nowrap">
-          <span>Workspace</span>
-          <span>/</span>
-          <span>Personal Finance</span>
-          <span>/</span>
-          <Link
-            to="/showAccounts"
-            className="hover:text-slate-700 transition font-medium"
+      <header className="h-16 sm:h-20 bg-white border-b border-slate-200 px-4 md:px-8 py-3.5 flex items-center justify-between sticky top-0 z-20 flex-shrink-0 w-full">
+        {/* Left Side: Mobile Menu Button & Breadcrumbs */}
+        <div className="flex items-center gap-3 min-w-0 pr-2">
+          <button
+            type="button"
+            className="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer flex-shrink-0"
+            onClick={() => setSidebarOpen && setSidebarOpen(!sidebarOpen)}
+            aria-label="Toggle menu"
           >
-            Accounts
-          </Link>
-          <span>/</span>
-          <span className="text-slate-800 font-bold">
-            {account?.account_name || "Detail Rekening"}
-          </span>
+            <Menu className="h-5 w-5" />
+          </button>
+
+          {/* Breadcrumbs */}
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-400 uppercase overflow-x-auto whitespace-nowrap">
+            <span className="hidden sm:inline">Workspace</span>
+            <span className="hidden sm:inline">/</span>
+            <span className="hidden sm:inline">Personal Finance</span>
+            <span className="hidden sm:inline">/</span>
+            <Link
+              to="/showAccounts"
+              className="hover:text-slate-700 transition font-medium"
+            >
+              Accounts
+            </Link>
+            <span>/</span>
+            <span className="text-slate-800 font-bold truncate max-w-[140px] sm:max-w-none">
+              {account?.account_name || "Detail Rekening"}
+            </span>
+          </div>
         </div>
 
         {/* User Profile Badge */}

@@ -374,7 +374,7 @@ export default function AccountDetailPage() {
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 md:hidden"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 md:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -385,6 +385,8 @@ export default function AccountDetailPage() {
         <AccountDetailHeader
           account={account}
           currentUser={currentUser}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
           onEditRekening={handleEditRekening}
           onOpenTransfer={() => setIsTransferModalOpen(true)}
         />

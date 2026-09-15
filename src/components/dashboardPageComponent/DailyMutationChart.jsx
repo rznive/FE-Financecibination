@@ -79,11 +79,11 @@ export default function DailyMutationChart({ data = [], loading = false }) {
   };
 
   return (
-    <div className="w-full h-72">
+    <div className="w-full h-52 sm:h-72">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
-          margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
+          margin={{ top: 8, right: 8, left: -22, bottom: 0 }}
         >
           <defs>
             {/* Gradien Hijau Emerald untuk Pemasukan */}
@@ -101,25 +101,26 @@ export default function DailyMutationChart({ data = [], loading = false }) {
 
           {/* Horizontal dashed grid lines matching Stitch */}
           <CartesianGrid
-            strokeDasharray="4 4"
+            strokeDasharray="3 3"
             stroke="#F1F5F9"
             vertical={false}
           />
 
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+            tick={{ fontSize: 9.5, fill: "#94A3B8", fontWeight: 500 }}
             axisLine={{ stroke: "#CBD5E1" }}
             tickLine={false}
-            dy={8}
+            dy={6}
           />
 
           <YAxis
-            tick={{ fontSize: 11, fill: "#94A3B8", fontWeight: 500 }}
+            tick={{ fontSize: 9.5, fill: "#94A3B8", fontWeight: 500 }}
             axisLine={false}
             tickLine={false}
             tickFormatter={formatYAxis}
-            dx={-5}
+            dx={-2}
+            width={48}
           />
 
           <Tooltip
@@ -131,12 +132,12 @@ export default function DailyMutationChart({ data = [], loading = false }) {
                 const net = pemasukan - pengeluaran;
 
                 return (
-                  <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-lg text-xs space-y-1.5 min-w-[170px]">
+                  <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-lg text-xs space-y-1.5 min-w-[160px] sm:min-w-[170px]">
                     <p className="font-bold text-slate-800 border-b border-slate-100 pb-1">
                       {formatTanggalIndo(item.date || item.tanggal)}
                     </p>
 
-                    <div className="flex items-center justify-between gap-4 text-emerald-600 font-medium">
+                    <div className="flex items-center justify-between gap-3 text-emerald-600 font-medium">
                       <span className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                         Pemasukan:
@@ -146,7 +147,7 @@ export default function DailyMutationChart({ data = [], loading = false }) {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-4 text-rose-500 font-medium">
+                    <div className="flex items-center justify-between gap-3 text-rose-500 font-medium">
                       <span className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-rose-500"></span>
                         Pengeluaran:
@@ -156,7 +157,7 @@ export default function DailyMutationChart({ data = [], loading = false }) {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-4 text-slate-700 pt-1 border-t border-slate-100 font-semibold">
+                    <div className="flex items-center justify-between gap-3 text-slate-700 pt-1 border-t border-slate-100 font-semibold">
                       <span>Selisih:</span>
                       <span
                         className={
@@ -185,13 +186,13 @@ export default function DailyMutationChart({ data = [], loading = false }) {
             strokeWidth={2.5}
             fill="url(#gradientEmerald)"
             dot={{
-              r: 4,
+              r: 3.5,
               stroke: "#ffffff",
-              strokeWidth: 2,
+              strokeWidth: 1.5,
               fill: "#00BA88",
             }}
             activeDot={{
-              r: 6,
+              r: 5,
               stroke: "#ffffff",
               strokeWidth: 2,
               fill: "#009F74",
@@ -204,16 +205,16 @@ export default function DailyMutationChart({ data = [], loading = false }) {
             dataKey="total_pengeluaran"
             name="Pengeluaran"
             stroke="#EF4444"
-            strokeWidth={2.5}
+            strokeWidth={2.2}
             fill="url(#gradientRose)"
             dot={{
-              r: 4,
+              r: 3.5,
               stroke: "#ffffff",
-              strokeWidth: 2,
+              strokeWidth: 1.5,
               fill: "#EF4444",
             }}
             activeDot={{
-              r: 6,
+              r: 5,
               stroke: "#ffffff",
               strokeWidth: 2,
               fill: "#DC2626",

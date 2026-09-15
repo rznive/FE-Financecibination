@@ -179,36 +179,36 @@ export default function RecentTransactionsCard({
 }) {
   return (
     <section
-      className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col"
+      className="bg-white rounded-2xl p-4 sm:p-5 md:p-7 border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col space-y-4"
       data-purpose="recent-transactions-widget"
     >
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-slate-900">
             Transaksi Terbaru
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs md:text-sm text-slate-400 mt-0.5">
             Aktivitas Keuangan Terbaru
           </p>
         </div>
         <Link
           to="/showMutasi"
-          className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors"
+          className="text-xs md:text-sm font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors"
         >
           <span>Lihat Semua</span>
-          <ChevronRight className="w-4 h-4 stroke-[2]" />
+          <ChevronRight className="w-4 h-4 stroke-[2.2]" />
         </Link>
       </div>
 
       {/* Transaction Items List */}
-      <div className="divide-y divide-slate-100">
+      <div className="space-y-2.5 sm:space-y-3 pt-1">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-12">
+          <div className="flex flex-col items-center justify-center py-10 sm:py-12">
             <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-2"></div>
             <p className="text-xs text-slate-400">Memuat transaksi...</p>
           </div>
         ) : transactions.length === 0 ? (
-          <p className="text-slate-400 text-sm text-center py-12">
+          <p className="text-slate-400 text-sm text-center py-10 sm:py-12">
             Belum ada transaksi terbaru.
           </p>
         ) : (
@@ -221,43 +221,67 @@ export default function RecentTransactionsCard({
             return (
               <div
                 key={tx.id}
-                className="py-4 flex items-center justify-between hover:bg-slate-50 px-2 rounded-xl transition-colors"
+                className="p-3 sm:p-3.5 md:p-4 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50/40 hover:bg-slate-50/80 transition-all flex items-center justify-between gap-3"
               >
                 {/* Left: Icon & Description */}
-                <div className="flex items-center gap-4 min-w-0 mr-2">
+                <div className="flex items-center gap-3 sm:gap-3.5 min-w-0 mr-2">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                       isIncome
-                        ? "bg-emerald-50 text-emerald-600"
-                        : "bg-rose-50 text-red-600"
+                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100/60"
+                        : "bg-rose-50 text-rose-500 border border-rose-100/60"
                     }`}
                   >
                     {renderTxIcon(tx)}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-800 truncate">
+                    <p className="text-xs sm:text-sm md:text-base font-bold text-slate-900 truncate leading-snug">
                       {tx.note || (isIncome ? "Pemasukan" : "Pengeluaran")}
                     </p>
-                    <p className="text-xs text-slate-400 mt-0.5 truncate">
+                    <p className="text-[10.5px] sm:text-xs text-slate-400 mt-0.5 truncate">
                       {accountName} • {formatTxDate(tx.created_at)}
                     </p>
                   </div>
                 </div>
 
                 {/* Right: Category Badge & Amount */}
-                <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="flex items-center gap-3 md:gap-4 flex-shrink-0 text-right">
+                  {/* Badge visible side-by-side on sm/md/lg tablet screens */}
                   <span
-                    className={`hidden sm:inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    className={`hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-semibold ${
                       isIncome
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
-                        : "bg-slate-100 text-slate-600 border border-slate-200"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-100/80"
+                        : "bg-slate-100 text-slate-600 border border-slate-200/70"
                     }`}
                   >
                     {getTxBadge(tx)}
                   </span>
+
+                  {/* Mobile stacked badge on < sm */}
+                  <div className="flex flex-col items-end sm:hidden">
+                    <span
+                      className={`inline-block text-[9.5px] font-medium px-1.5 py-0.5 rounded mb-1 leading-tight ${
+                        isIncome
+                          ? "bg-emerald-50/90 text-emerald-700 border border-emerald-100"
+                          : "bg-slate-100 text-slate-600 border border-slate-200"
+                      }`}
+                    >
+                      {getTxBadge(tx)}
+                    </span>
+                    <span
+                      className={`text-xs font-bold leading-none ${
+                        isIncome ? "text-emerald-600" : "text-rose-600"
+                      }`}
+                    >
+                      {isIncome ? "+" : "-"}Rp{" "}
+                      {amountNum.toLocaleString("id-ID")}
+                    </span>
+                  </div>
+
+                  {/* Tablet/Desktop amount */}
                   <span
-                    className={`text-sm font-bold ${
-                      isIncome ? "text-emerald-600" : "text-red-600"
+                    className={`hidden sm:inline-block text-sm md:text-base font-bold whitespace-nowrap ${
+                      isIncome ? "text-emerald-600" : "text-rose-600"
                     }`}
                   >
                     {isIncome ? "+" : "-"}Rp{" "}

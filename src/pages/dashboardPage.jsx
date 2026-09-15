@@ -256,10 +256,10 @@ export default function DashboardPage() {
       {/* Sidebar Navigation */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-      {/* Mobile Backdrop */}
+      {/* Mobile & Tablet Backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -270,15 +270,22 @@ export default function DashboardPage() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Main Dashboard Container (only this area scrolls) */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-8">
-          <div className="max-w-[1600px] w-full mx-auto space-y-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:px-6 md:px-8 py-5 md:py-7 space-y-5 sm:space-y-6 md:space-y-7">
+          <div className="max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-[1600px] w-full mx-auto space-y-5 sm:space-y-6 md:space-y-7">
+            {/* Mobile & Tablet Breadcrumb Context */}
+            <div className="flex lg:hidden items-center space-x-1.5 text-[10.5px] sm:text-[11px] font-bold tracking-wider text-slate-400 uppercase px-0.5">
+              <span>WORKSPACE</span>
+              <span>/</span>
+              <span className="text-slate-600">PERSONAL FINANCE</span>
+            </div>
+
             {/* Dashboard Header: Title & Action Buttons */}
             <DashboardPageHeader onAddMutation={handleOpenAddMutation} />
 
             {/* Card Net Worth (Full-Width di atas 3 card) */}
             <NetWorthCard totalBalance={totalBalance} balances={balances} />
 
-            {/* 3 Summary Cards Grid (Monthly Income, Monthly Spending, Net Cashflow) */}
+            {/* Summary Cards Grid (Sisa Uang, Monthly Income, Monthly Spending) */}
             <DashboardSummaryCards
               monthlyIncome={monthlyIncome}
               incomeComparison={incomeComparison}
@@ -289,7 +296,7 @@ export default function DashboardPage() {
             />
 
             {/* Lower Dashboard Section: Full-Width Chart & Full-Width Transactions */}
-            <div className="space-y-8" data-purpose="charts-and-transactions">
+            <div className="space-y-4 sm:space-y-6 md:space-y-8" data-purpose="charts-and-transactions">
               {/* Full-Width Activity Chart Section */}
               <FinancialActivityChart
                 chartData={chartData}
