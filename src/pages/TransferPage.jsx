@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
-import TransferModal from "../components/transferModal";
+import TransferModal from "../components/modal/transferModal";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import UnderDevelopment from "../components/UnderDevelopment";

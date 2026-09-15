@@ -41,7 +41,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
     },
     {
       to: "/showAccounts",
-      label: "Accounts",
+      label: "Akun Rekening",
       icon: <Layers className="w-5 h-5" />,
     },
     {

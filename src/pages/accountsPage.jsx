@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, ArrowLeftRight } from "lucide-react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import TransferModal from "../components/transferModal";
+import TransferModal from "../components/modal/transferModal";
 import {
   AccountsSummaryCards,
   AccountCardsGrid,
@@ -14,6 +15,7 @@ import {
 import { API_BASE_URL } from "../config";
 
 export default function AccountsPage() {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Account & financial data state
@@ -31,6 +33,7 @@ export default function AccountsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [selectedAccountDetail, setSelectedAccountDetail] = useState(null);
+  const [selectedTransferAccount, setSelectedTransferAccount] = useState(null);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -136,6 +139,7 @@ export default function AccountsPage() {
   };
 
   const handleOpenTransferWithAccount = (acc) => {
+    setSelectedTransferAccount(acc || null);
     setIsTransferModalOpen(true);
   };
 
@@ -210,7 +214,7 @@ export default function AccountsPage() {
             accounts={accounts}
             loading={loading}
             onAddAccount={() => setIsAddModalOpen(true)}
-            onSelectDetail={(acc) => setSelectedAccountDetail(acc)}
+            onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
           />
 
           {/* 3. Balance Distribution Card */}
@@ -223,7 +227,7 @@ export default function AccountsPage() {
           <AccountsTable
             accounts={accounts}
             loading={loading}
-            onSelectDetail={(acc) => setSelectedAccountDetail(acc)}
+            onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
             onOpenTransfer={(acc) => handleOpenTransferWithAccount(acc)}
           />
         </main>
@@ -249,7 +253,11 @@ export default function AccountsPage() {
 
       <TransferModal
         isOpen={isTransferModalOpen}
-        onClose={() => setIsTransferModalOpen(false)}
+        initialFromAccountId={selectedTransferAccount?.account_id}
+        onClose={() => {
+          setIsTransferModalOpen(false);
+          setSelectedTransferAccount(null);
+        }}
         onSuccess={handleTransferSuccess}
       />
     </div>

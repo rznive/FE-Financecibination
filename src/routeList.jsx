@@ -4,6 +4,7 @@ import HomePage from "./pages/homePage";
 import DashboardPage from "./pages/dashboardPage";
 import MutasiPage from "./pages/mutasiPage";
 import AccountsPage from "./pages/accountsPage";
+import AccountDetailPage from "./pages/accountDetailPage";
 import TotalTransactionPage from "./pages/totalTransactionPage";
 import TransferPage from "./pages/TransferPage";
 import ProtectedRoute from "./middleware/protectedRoute";
@@ -42,6 +43,22 @@ const RouteList = [
     element: (
       <ProtectedRoute>
         <AccountsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/accounts/:id",
+    element: (
+      <ProtectedRoute>
+        <AccountDetailPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/account-detail/:id",
+    element: (
+      <ProtectedRoute>
+        <AccountDetailPage />
       </ProtectedRoute>
     ),
   },

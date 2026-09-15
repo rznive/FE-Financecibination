@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Eye,
   ArrowLeftRight,
@@ -44,6 +45,7 @@ export default function AccountsTable({
   onOpenTransfer,
   loading = false,
 }) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -137,8 +139,12 @@ export default function AccountsTable({
                     <td className="py-4 px-6 text-center whitespace-nowrap">
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          onClick={() => onSelectDetail(acc)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-700 bg-white hover:bg-emerald-50 rounded-lg border border-slate-200 hover:border-emerald-500/30 transition-colors shadow-xs"
+                          onClick={() =>
+                            onSelectDetail
+                              ? onSelectDetail(acc)
+                              : navigate(`/accounts/${acc.account_id}`)
+                          }
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-700 bg-white hover:bg-emerald-50 rounded-lg border border-slate-200 hover:border-emerald-500/30 transition-colors shadow-xs cursor-pointer active:scale-95"
                           type="button"
                         >
                           <Eye className="w-3.5 h-3.5 text-slate-400 hover:text-emerald-600" />

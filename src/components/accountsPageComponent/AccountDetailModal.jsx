@@ -114,6 +114,15 @@ export default function AccountDetailModal({
 
           {/* Quick Action Buttons */}
           <div className="space-y-2 pt-2">
+            <Link
+              to={`/accounts/${account.account_id}`}
+              onClick={onClose}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-sm transition-all shadow-xs"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Buka Halaman Detail Lengkap</span>
+            </Link>
+
             <button
               type="button"
               onClick={() => {
