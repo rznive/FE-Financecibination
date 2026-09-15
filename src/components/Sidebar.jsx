@@ -36,7 +36,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
     },
     {
       to: "/showMutasi",
-      label: "Transactions",
+      label: "Mutasi",
       icon: <DollarSign className="w-5 h-5" />,
     },
     {

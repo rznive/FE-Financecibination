@@ -7,8 +7,8 @@ import {
   DashboardSummaryCards,
   FinancialActivityChart,
   RecentTransactionsCard,
-  AddMutationModal,
 } from "../components/dashboardPageComponent";
+import AddMutationModal from "../components/modal/AddMutationModal";
 import { API_BASE_URL } from "../config";
 
 export default function DashboardPage() {

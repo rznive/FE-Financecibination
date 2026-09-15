@@ -21,17 +21,17 @@ export default function UnderDevelopment({
   featureName = "Fitur Transaksi dan Akun",
   title = "Halaman Sedang Dalam Pengembangan",
   subtitle = "Halaman ini sedang kami rancang dan optimalkan untuk mempermudah pengelolaan keuangan anda",
-  progress = 0,
+  progress = 25,
   estimatedRelease = "Segera Hadir pada Update Mendatang",
   backPath = "/dashboard",
   backText = "Kembali ke Dashboard",
   secondaryPath = "/showMutasi",
   secondaryText = "Lihat Transaksi",
   highlights = [
-    {
-      icon: <DollarSign className="w-4 h-4 text-emerald-600" />,
-      text: "Transaction",
-    },
+    // {
+    //   icon: <DollarSign className="w-4 h-4 text-emerald-600" />,
+    //   text: "Transaction",
+    // },
     {
       icon: <Layers className="w-4 h-4 text-emerald-600" />,
       text: "Account",

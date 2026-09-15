@@ -14,6 +14,7 @@ import {
   getCategoryMeta,
   getDateRangeBadgeText,
 } from "../components/mutasiPageComponent";
+import AddMutationModal from "../components/modal/AddMutationModal";
 
 export default function MutasiPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function MutasiPage() {
 
   // Modal states
   const [showAddMutation, setShowAddMutation] = useState(false);
-  const [mutationType, setMutationType] = useState("masuk"); // "masuk" or "keluar"
+  const [mutationType, setMutationType] = useState(null);
   const [selectedDetail, setSelectedDetail] = useState(null);
 
   // Filter states
@@ -269,10 +270,14 @@ export default function MutasiPage() {
   };
 
   // Handle Add Mutation Success
-  const handleMutationSuccess = () => {
+  const handleAddMutationSuccess = async () => {
     setShowAddMutation(false);
-    fetchMutations(timeframe, currentPage, itemsPerPage);
-    fetchSummary(timeframe);
+    await refreshAllData();
+  };
+
+  const handleOpenAddMutation = (type) => {
+    setMutationType(type);
+    setShowAddMutation(true);
   };
 
   // Timeframe change resets page
@@ -401,10 +406,11 @@ export default function MutasiPage() {
 
       {/* Modal Add Mutation (Pemasukan / Pengeluaran) */}
       {showAddMutation && (
-        <MutasiAddModal
+        <AddMutationModal
+          isOpen={showAddMutation}
           mutationType={mutationType}
           onClose={() => setShowAddMutation(false)}
-          onSuccess={handleMutationSuccess}
+          onSubmit={handleAddMutationSuccess}
         />
       )}
     </div>
