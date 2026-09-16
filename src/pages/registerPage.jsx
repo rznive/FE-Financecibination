@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, UserPlus, Mail, Lock, User, Phone } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
 import { API_BASE_URL } from "../config";
 
 export default function RegisterPage() {
@@ -110,6 +111,60 @@ export default function RegisterPage() {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/google`, {
+        id_token: credentialResponse.credential,
+      });
+
+      const { token, data, is_profile_complete } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(data));
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Akun Google berhasil terhubung!",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
+
+      setTimeout(() => {
+        if (!is_profile_complete) {
+          navigate("/complete-profile");
+        } else {
+          navigate("/dashboard");
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Google register error:", error);
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Daftar dengan Google gagal. Silakan coba lagi.",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
+    }
+  };
+
+  const handleGoogleError = () => {
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "error",
+      title: "Login Google dibatalkan atau gagal.",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+    });
   };
 
   return (
@@ -283,6 +338,27 @@ export default function RegisterPage() {
                 </span>
                 Create account
               </button>
+            </div>
+
+            <div className="relative my-2">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">atau daftar dengan</span>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                useOneTap={false}
+                text="signup_with"
+                shape="rectangular"
+                logo_alignment="left"
+                width="100%"
+              />
             </div>
           </form>
 

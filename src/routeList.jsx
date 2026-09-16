@@ -7,7 +7,9 @@ import AccountsPage from "./pages/accountsPage";
 import AccountDetailPage from "./pages/accountDetailPage";
 import TotalTransactionPage from "./pages/totalTransactionPage";
 import TransferPage from "./pages/TransferPage";
+import CompleteProfilePage from "./pages/completeProfilePage";
 import ProtectedRoute from "./middleware/protectedRoute";
+import ProfileCompleteRoute from "./middleware/profileCompleteRoute";
 
 const RouteList = [
   {
@@ -23,59 +25,67 @@ const RouteList = [
     element: <RegisterPage />,
   },
   {
-    path: "/dashboard",
+    path: "/complete-profile",
     element: (
       <ProtectedRoute>
-        <DashboardPage />
+        <CompleteProfilePage />
       </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <ProfileCompleteRoute>
+        <DashboardPage />
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/showMutasi",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <MutasiPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/showAccounts",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <AccountsPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/accounts/:id",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <AccountDetailPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/account-detail/:id",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <AccountDetailPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/totalTransaction",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <TotalTransactionPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
   {
     path: "/riwayatTransfer",
     element: (
-      <ProtectedRoute>
+      <ProfileCompleteRoute>
         <TransferPage />
-      </ProtectedRoute>
+      </ProfileCompleteRoute>
     ),
   },
 ];
