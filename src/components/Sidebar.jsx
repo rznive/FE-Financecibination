@@ -47,7 +47,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between h-full bg-white border-r border-slate-200 shadow-2xl lg:shadow-none transition-transform duration-300 ease-in-out lg:static lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-30 select-none flex-shrink-0 ${
+      className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between h-full bg-white border-r border-slate-200 shadow-2xl lg:shadow-none transition-transform duration-300 ease-in-out lg:static lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:z-40 select-none flex-shrink-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       } ${
         isCollapsed ? "lg:w-20" : "lg:w-[264px]"
@@ -58,14 +58,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <button
         onClick={toggleCollapse}
         type="button"
-        className="hidden lg:flex absolute -right-3 top-7 w-6 h-6 bg-white border border-slate-200 hover:border-emerald-400 rounded-full items-center justify-center text-slate-400 hover:text-emerald-600 shadow-xs z-50 cursor-pointer transition-all duration-200 hover:scale-110"
-        title={isCollapsed ? "Perluas Sidebar" : "Ciutkan Sidebar"}
-        aria-label="Toggle collapse sidebar"
+        className="hidden lg:flex absolute -right-3.5 top-7 w-7 h-7 bg-emerald-50 hover:bg-emerald-600 focus:bg-emerald-600 border border-emerald-200 hover:border-emerald-600 focus:border-emerald-600 focus:outline-none rounded-full items-center justify-center text-emerald-700 hover:text-white focus:text-white shadow-sm hover:shadow-md hover:shadow-emerald-600/20 z-50 cursor-pointer transition-all duration-200"
+        title={isCollapsed ? "Tampilkan sidebar" : "Sembunyikan sidebar"}
+        aria-label={isCollapsed ? "Tampilkan sidebar" : "Sembunyikan sidebar"}
       >
         {isCollapsed ? (
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-4 h-4 transition-colors duration-200" />
         ) : (
-          <ChevronLeft className="w-3.5 h-3.5" />
+          <ChevronLeft className="w-4 h-4 transition-colors duration-200" />
         )}
       </button>
 
