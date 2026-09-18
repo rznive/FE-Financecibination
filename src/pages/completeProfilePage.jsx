@@ -56,8 +56,6 @@ export default function CompleteProfilePage() {
       const data = await response.json();
 
       if (data.status) {
-        localStorage.setItem("user", JSON.stringify(data.data));
-
         Swal.fire({
           toast: true,
           position: "top-end",

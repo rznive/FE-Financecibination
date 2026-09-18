@@ -1,12 +1,27 @@
 // ProtectedRoute.jsx
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 export default function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const [status, setStatus] = useState("loading"); // "loading" | "auth" | "unauth"
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/auth/me`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          setStatus("auth");
+        } else {
+          setStatus("unauth");
+        }
+      })
+      .catch(() => setStatus("unauth"));
+  }, []);
 
+  if (status === "loading") return null;
+  if (status === "unauth") return <Navigate to="/login" replace />;
   return children;
 }
+

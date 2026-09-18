@@ -35,20 +35,12 @@ export default function AccountsPage() {
   const [selectedAccountDetail, setSelectedAccountDetail] = useState(null);
   const [selectedTransferAccount, setSelectedTransferAccount] = useState(null);
 
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-    return {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  };
-
   // 1. Fetch Balances & Accounts from /getSaldo
   const fetchAccounts = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.status) {
@@ -72,14 +64,14 @@ export default function AccountsPage() {
 
       let res = await fetch(
         `${API_BASE_URL}/finance/total-pemasukan-bulanan?month=${monthStr}&year=${year}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       let result = await res.json();
 
       if (!result.status) {
         res = await fetch(
           `${API_BASE_URL}/finance/total-pemasukan-bulanan?month=${monthNum}&year=${year}`,
-          { headers: getAuthHeaders() }
+          { credentials: "include" }
         );
         result = await res.json();
       }
@@ -103,14 +95,14 @@ export default function AccountsPage() {
 
       let res = await fetch(
         `${API_BASE_URL}/finance/total-pengeluaran-bulanan?month=${monthStr}&year=${year}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       let result = await res.json();
 
       if (!result.status) {
         res = await fetch(
           `${API_BASE_URL}/finance/total-pengeluaran-bulanan?month=${monthNum}&year=${year}`,
-          { headers: getAuthHeaders() }
+          { credentials: "include" }
         );
         result = await res.json();
       }

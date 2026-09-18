@@ -23,12 +23,8 @@ export default function AccountCardsGrid({
       const fetchSaldo = async () => {
         setInternalLoading(true);
         try {
-          const token = localStorage.getItem("token");
           const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            credentials: "include",
           });
           const result = await res.json();
           if (result.status && Array.isArray(result.data)) {

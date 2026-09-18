@@ -15,11 +15,8 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: "include",
         });
         const result = await res.json();
         if (result.status) {
@@ -61,7 +58,6 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const token = localStorage.getItem("token");
       const url =
         mutationType === "masuk"
           ? `${API_BASE_URL}/finance/pemasukan`
@@ -71,8 +67,8 @@ export default function MutationForm({ mutationType, onSubmit, onClose }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           name: form.name,
           amount: Number(form.amount),

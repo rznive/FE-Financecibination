@@ -30,13 +30,12 @@ export default function AccountsForm({ onAccountAdded, onClose }) {
 
     setSubmitting(true);
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/tambahRekening`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({ name: form.name }),
       });
 

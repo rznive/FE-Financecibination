@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   LogOut,
@@ -9,10 +9,10 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import { logout } from "../utils/auth";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
-  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -164,10 +164,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       {/* Bottom Sign Out Button */}
       <div className="p-3 border-t border-slate-100 flex-shrink-0 flex justify-center">
         <button
-          onClick={() => {
-            localStorage.removeItem("token");
-            navigate("/login");
-          }}
+          onClick={() => logout()}
           type="button"
           title="Sign Out"
           className={`flex items-center text-rose-600 hover:text-rose-700 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer ${

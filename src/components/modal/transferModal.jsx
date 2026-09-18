@@ -36,9 +36,8 @@ export default function TransferModal({
 
     const fetchAccounts = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${API_BASE_URL}/getsaldo`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch(`${API_BASE_URL}/getSaldo`, {
+          credentials: "include",
         });
         const result = await res.json();
         if (result.status && Array.isArray(result.data)) {
@@ -148,13 +147,12 @@ export default function TransferModal({
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/transfer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           from_account_id: fromAccount,
           to_account_id: toAccount,

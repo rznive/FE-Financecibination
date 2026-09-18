@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import jwt_decode from "jwt-decode";
 import Sidebar from "../components/Sidebar";
 import TransferModal from "../components/modal/transferModal";
 import { MutasiDetailModal, formatDateTime, getCategoryMeta } from "../components/mutasiPageComponent";
@@ -41,25 +40,15 @@ export default function AccountDetailPage() {
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [selectedMutationDetail, setSelectedMutationDetail] = useState(null);
 
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-    return {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  };
-
-  // Decode user token
+  // Fetch current user from /auth/me
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwt_decode(token);
-        setCurrentUser(decoded);
-      } catch (err) {
-        console.error("Token decode error:", err);
-      }
-    }
+    fetch(`${API_BASE_URL}/auth/me`, { credentials: "include" })
+      .then(async (res) => {
+        if (!res.ok) return;
+        const data = await res.json();
+        setCurrentUser(data.data || data);
+      })
+      .catch(() => {});
   }, []);
 
   // 1. Fetch all accounts from /getSaldo and locate current account
@@ -67,7 +56,7 @@ export default function AccountDetailPage() {
     setLoadingAccount(true);
     try {
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.status && Array.isArray(result.data)) {
@@ -95,7 +84,7 @@ export default function AccountDetailPage() {
     setLoadingMutations(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi?range=3m&limit=200`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.success && Array.isArray(result.data)) {

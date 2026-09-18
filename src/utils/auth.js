@@ -1,8 +1,18 @@
+import { API_BASE_URL } from "../config";
+
 /**
- * Removes token and user from localStorage and redirects to /login
+ * Calls backend logout endpoint to invalidate the HttpOnly cookie,
+ * then redirects to /login.
  */
-export function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+export async function logout() {
+  try {
+    await fetch(`${API_BASE_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (err) {
+    console.error("Logout error:", err);
+  }
   window.location.href = "/login";
 }
+

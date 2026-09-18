@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
 import { User, Menu } from "lucide-react";
+import { API_BASE_URL } from "../config";
 
 export default function Header({ sidebarOpen, setSidebarOpen }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decodedToken = jwt_decode(token);
-        setUser(decodedToken);
-      } catch (error) {
-        console.error("Invalid token", error);
-      }
-    }
+    fetch(`${API_BASE_URL}/auth/me`, { credentials: "include" })
+      .then(async (res) => {
+        if (!res.ok) return;
+        const data = await res.json();
+        setUser(data.data || data);
+      })
+      .catch(() => {});
   }, []);
 
   return (

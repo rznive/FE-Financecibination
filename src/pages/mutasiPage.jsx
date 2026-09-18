@@ -55,21 +55,13 @@ export default function MutasiPage() {
     has_next: false,
   });
 
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-    return {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  };
-
   // 1. Fetch mutations from API with server-side pagination & date range
   const fetchMutations = useCallback(async (range, page, limit) => {
     setLoading(true);
     try {
       const res = await fetch(
         `${API_BASE_URL}/mutasi?range=${range}&page=${page}&limit=${limit}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       const result = await res.json();
 
@@ -101,7 +93,7 @@ export default function MutasiPage() {
   const fetchAccounts = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.status && Array.isArray(result.data)) {
@@ -117,7 +109,7 @@ export default function MutasiPage() {
     setLoadingSummary(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi/summary?range=${range}`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.success && result.data) {

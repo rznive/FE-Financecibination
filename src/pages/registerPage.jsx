@@ -117,12 +117,9 @@ export default function RegisterPage() {
     try {
       const response = await axios.post(`${API_BASE_URL}/auth/google`, {
         id_token: credentialResponse.credential,
-      });
+      }, { withCredentials: true });
 
-      const { token, data, is_profile_complete } = response.data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(data));
+      const { is_profile_complete } = response.data;
 
       Swal.fire({
         toast: true,

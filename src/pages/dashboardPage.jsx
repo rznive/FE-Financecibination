@@ -44,20 +44,13 @@ export default function DashboardPage() {
   // Global loading
   const [initialLoading, setInitialLoading] = useState(true);
 
-  // Helper auth headers
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-    return {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  };
+  // Cookie is sent automatically by browser for all credentialed requests
 
   // 1. Fetch Balances (Net Worth)
   const fetchBalances = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/getSaldo`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.status) {
@@ -80,14 +73,14 @@ export default function DashboardPage() {
       // Coba format 2-digit dulu (e.g. month=08&year=2026), lalu fallback jika perlu
       let res = await fetch(
         `${API_BASE_URL}/finance/total-pemasukan-bulanan?month=${monthStr}&year=${year}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       let result = await res.json();
 
       if (!result.status) {
         res = await fetch(
           `${API_BASE_URL}/finance/total-pemasukan-bulanan?month=${monthNum}&year=${year}`,
-          { headers: getAuthHeaders() }
+          { credentials: "include" }
         );
         result = await res.json();
       }
@@ -111,14 +104,14 @@ export default function DashboardPage() {
 
       let res = await fetch(
         `${API_BASE_URL}/finance/total-pengeluaran-bulanan?month=${monthStr}&year=${year}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       let result = await res.json();
 
       if (!result.status) {
         res = await fetch(
           `${API_BASE_URL}/finance/total-pengeluaran-bulanan?month=${monthNum}&year=${year}`,
-          { headers: getAuthHeaders() }
+          { credentials: "include" }
         );
         result = await res.json();
       }
@@ -142,14 +135,14 @@ export default function DashboardPage() {
 
       let res = await fetch(
         `${API_BASE_URL}/finance/net-cashflow-bulanan?month=${monthNum}&year=${year}`,
-        { headers: getAuthHeaders() }
+        { credentials: "include" }
       );
       let result = await res.json();
 
       if (!result.status) {
         res = await fetch(
           `${API_BASE_URL}/finance/net-cashflow-bulanan?month=${monthStr}&year=${year}`,
-          { headers: getAuthHeaders() }
+          { credentials: "include" }
         );
         result = await res.json();
       }
@@ -169,7 +162,7 @@ export default function DashboardPage() {
     setChartLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi/chart-aktivitas`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
 
@@ -199,7 +192,7 @@ export default function DashboardPage() {
     setRecentLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi/recent-transaction`, {
-        headers: getAuthHeaders(),
+        credentials: "include",
       });
       const result = await res.json();
       if (result.success || result.status) {
