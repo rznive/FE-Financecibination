@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Plus } from "lucide-react";
 import Swal from "sweetalert2";
 import Header from "../components/Header";
@@ -19,10 +19,13 @@ import AddMutationModal from "../components/modal/AddMutationModal";
 export default function MutasiPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Initial loading — gate seluruh render konten saat pertama kali masuk
+  const [initialLoading, setInitialLoading] = useState(true);
+
   // Raw data states
   const [mutations, setMutations] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Summary states for cards 1 - 3
   const [summary, setSummary] = useState({
@@ -122,25 +125,45 @@ export default function MutasiPage() {
     }
   }, []);
 
-  // Fetch mutations whenever timeframe, page, or limit changes
-  useEffect(() => {
-    fetchMutations(timeframe, currentPage, itemsPerPage);
-  }, [fetchMutations, timeframe, currentPage, itemsPerPage]);
+  // Initial load — jalankan ketiga fetch paralel, gate render sampai selesai
+  const isInitialMount = useRef(true);
 
-  // Fetch summary whenever timeframe changes
   useEffect(() => {
+    const init = async () => {
+      setInitialLoading(true);
+      try {
+        await Promise.all([
+          fetchMutations(timeframe, 1, itemsPerPage),
+          fetchSummary(timeframe),
+          fetchAccounts(),
+        ]);
+      } finally {
+        setInitialLoading(false);
+        isInitialMount.current = false;
+      }
+    };
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Subsequent: fetch ulang saat timeframe berubah (skip initial mount)
+  useEffect(() => {
+    if (isInitialMount.current) return;
+    setCurrentPage(1);
+    fetchMutations(timeframe, 1, itemsPerPage);
     fetchSummary(timeframe);
-  }, [fetchSummary, timeframe]);
+  }, [timeframe]);
 
+  // Subsequent: fetch ulang saat page atau limit berubah (skip initial mount)
   useEffect(() => {
-    fetchAccounts();
-  }, [fetchAccounts]);
+    if (isInitialMount.current) return;
+    fetchMutations(timeframe, currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage]);
 
-  // Reset to page 1 when filters change (client-side filters or items per page)
+  // Reset ke page 1 saat filter client-side berubah
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, filterType, filterAccount, itemsPerPage]);
-
+  }, [searchQuery, filterType, filterAccount]);
   // Derived date range badge text
   const dateRangeBadgeText = useMemo(
     () => getDateRangeBadgeText(timeframe),
@@ -261,10 +284,13 @@ export default function MutasiPage() {
     URL.revokeObjectURL(url);
   };
 
-  // Handle Add Mutation Success
+  // Handle Add Mutation Success — refresh mutations & summary tanpa initial loading
   const handleAddMutationSuccess = async () => {
     setShowAddMutation(false);
-    await refreshAllData();
+    await Promise.all([
+      fetchMutations(timeframe, currentPage, itemsPerPage),
+      fetchSummary(timeframe),
+    ]);
   };
 
   const handleOpenAddMutation = (type) => {
@@ -305,7 +331,7 @@ export default function MutasiPage() {
         {/* Main Container */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-8">
           <div className="max-w-[1600px] w-full mx-auto space-y-8">
-            {/* Page Title & Actions */}
+            {/* Page Title & Actions — selalu tampil */}
             <section
               className="flex flex-col md:flex-row md:items-center justify-between gap-4"
               data-purpose="page-title-and-actions"
@@ -346,44 +372,64 @@ export default function MutasiPage() {
               </div>
             </section>
 
-            {/* Summary Cards */}
-            <MutasiSummaryCards
-              summary={summary}
-              isSurplus={isSurplus}
-              netStatus={netStatus}
-              netAmount={netAmount}
-              periodLabel={periodLabel}
-            />
+            {initialLoading ? (
+              /* ── Skeleton: ditampilkan sampai seluruh initial data siap ── */
+              <div className="space-y-8 animate-pulse">
+                {/* Summary Cards skeleton — 3 kolom */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                </div>
 
-            {/* Filters, Table, Pagination */}
-            <div className="space-y-6" data-purpose="transactions-content">
-              <MutasiFilterBar
-                timeframe={timeframe}
-                onTimeframeChange={handleTimeframeChange}
-                dateRangeBadgeText={dateRangeBadgeText}
-                onExportCSV={handleExportCSV}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                filterType={filterType}
-                onFilterTypeChange={setFilterType}
-                filterAccount={filterAccount}
-                onFilterAccountChange={setFilterAccount}
-                accounts={accounts}
-              />
+                {/* Filter bar skeleton */}
+                <div className="h-12 rounded-xl bg-slate-200/70" />
 
-              <MutasiTable
-                loading={loading}
-                mutations={filteredMutations}
-                onViewDetail={setSelectedDetail}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-                totalPages={totalPages}
-                totalItems={totalItems}
-                itemsPerPage={itemsPerPage}
-                onItemsPerPageChange={handleItemsPerPageChange}
-                startIndex={startIndex}
-              />
-            </div>
+                {/* Table skeleton */}
+                <div className="h-96 rounded-2xl bg-slate-200/70" />
+              </div>
+            ) : (
+              <>
+                {/* Summary Cards */}
+                <MutasiSummaryCards
+                  summary={summary}
+                  isSurplus={isSurplus}
+                  netStatus={netStatus}
+                  netAmount={netAmount}
+                  periodLabel={periodLabel}
+                />
+
+                {/* Filters, Table, Pagination */}
+                <div className="space-y-6" data-purpose="transactions-content">
+                  <MutasiFilterBar
+                    timeframe={timeframe}
+                    onTimeframeChange={handleTimeframeChange}
+                    dateRangeBadgeText={dateRangeBadgeText}
+                    onExportCSV={handleExportCSV}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    filterType={filterType}
+                    onFilterTypeChange={setFilterType}
+                    filterAccount={filterAccount}
+                    onFilterAccountChange={setFilterAccount}
+                    accounts={accounts}
+                  />
+
+                  <MutasiTable
+                    loading={loading}
+                    mutations={filteredMutations}
+                    onViewDetail={setSelectedDetail}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                    onItemsPerPageChange={handleItemsPerPageChange}
+                    startIndex={startIndex}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </main>
       </div>

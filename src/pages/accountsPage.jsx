@@ -18,10 +18,13 @@ export default function AccountsPage() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Initial loading — gate seluruh render konten saat pertama kali masuk
+  const [initialLoading, setInitialLoading] = useState(true);
+
   // Account & financial data state
   const [accounts, setAccounts] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Monthly income & spending for summary cards
   const [monthlyIncome, setMonthlyIncome] = useState(0);
@@ -117,9 +120,19 @@ export default function AccountsPage() {
   }, []);
 
   useEffect(() => {
-    fetchAccounts();
-    fetchMonthlyIncome();
-    fetchMonthlySpending();
+    const init = async () => {
+      setInitialLoading(true);
+      try {
+        await Promise.all([
+          fetchAccounts(),
+          fetchMonthlyIncome(),
+          fetchMonthlySpending(),
+        ]);
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+    init();
   }, [fetchAccounts, fetchMonthlyIncome, fetchMonthlySpending]);
 
   const handleAccountAdded = () => {
@@ -153,7 +166,7 @@ export default function AccountsPage() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8 max-w-[1600px] w-full mx-auto space-y-8">
-          {/* Page Title and Actions */}
+          {/* Page Title and Actions — selalu tampil */}
           <section
             className="flex flex-col md:flex-row md:items-center justify-between gap-4"
             data-purpose="page-title-and-actions"
@@ -190,38 +203,65 @@ export default function AccountsPage() {
             </div>
           </section>
 
-          {/* 1. Metrics Summary Cards */}
-          <AccountsSummaryCards
-            accounts={accounts}
-            totalBalance={totalBalance}
-            monthlyIncome={monthlyIncome}
-            monthlySpending={monthlySpending}
-            incomeComparison={incomeComparison}
-            spendingComparison={spendingComparison}
-            loading={loading}
-          />
+          {initialLoading ? (
+            /* ── Skeleton: ditampilkan sampai seluruh initial data siap ── */
+            <div className="space-y-8 animate-pulse">
+              {/* Summary Cards skeleton — 4 kolom */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                <div className="h-28 rounded-2xl bg-slate-200/70" />
+                <div className="h-28 rounded-2xl bg-slate-200/70" />
+                <div className="h-28 rounded-2xl bg-slate-200/70" />
+                <div className="h-28 rounded-2xl bg-slate-200/70" />
+              </div>
 
-          {/* 2. Account Cards Grid (Cards + Add Account trigger) */}
-          <AccountCardsGrid
-            accounts={accounts}
-            loading={loading}
-            onAddAccount={() => setIsAddModalOpen(true)}
-            onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
-          />
+              {/* Account Cards Grid skeleton */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+                <div className="h-48 rounded-2xl bg-slate-200/70" />
+                <div className="h-48 rounded-2xl bg-slate-200/70" />
+                <div className="h-48 rounded-2xl bg-slate-200/70" />
+                <div className="h-48 rounded-2xl bg-slate-200/70" />
+              </div>
 
-          {/* 3. Balance Distribution Card */}
-          <BalanceDistributionCard
-            accounts={accounts}
-            totalBalance={totalBalance}
-          />
+              {/* Balance Distribution + Table skeleton */}
+              <div className="h-48 rounded-2xl bg-slate-200/70" />
+              <div className="h-64 rounded-2xl bg-slate-200/70" />
+            </div>
+          ) : (
+            <>
+              {/* 1. Metrics Summary Cards */}
+              <AccountsSummaryCards
+                accounts={accounts}
+                totalBalance={totalBalance}
+                monthlyIncome={monthlyIncome}
+                monthlySpending={monthlySpending}
+                incomeComparison={incomeComparison}
+                spendingComparison={spendingComparison}
+                loading={loading}
+              />
 
-          {/* 4. Accounts Table */}
-          <AccountsTable
-            accounts={accounts}
-            loading={loading}
-            onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
-            onOpenTransfer={(acc) => handleOpenTransferWithAccount(acc)}
-          />
+              {/* 2. Account Cards Grid (Cards + Add Account trigger) */}
+              <AccountCardsGrid
+                accounts={accounts}
+                loading={loading}
+                onAddAccount={() => setIsAddModalOpen(true)}
+                onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
+              />
+
+              {/* 3. Balance Distribution Card */}
+              <BalanceDistributionCard
+                accounts={accounts}
+                totalBalance={totalBalance}
+              />
+
+              {/* 4. Accounts Table */}
+              <AccountsTable
+                accounts={accounts}
+                loading={loading}
+                onSelectDetail={(acc) => navigate(`/accounts/${acc.account_id}`)}
+                onOpenTransfer={(acc) => handleOpenTransferWithAccount(acc)}
+              />
+            </>
+          )}
         </main>
       </div>
 

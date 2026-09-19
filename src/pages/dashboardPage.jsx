@@ -35,11 +35,11 @@ export default function DashboardPage() {
 
   // State 5: Chart data (/mutasi)
   const [chartData, setChartData] = useState([]);
-  const [chartLoading, setChartLoading] = useState(true);
+  const [chartLoading, setChartLoading] = useState(false);
 
   // State 6: Recent Transactions (/mutasi/recent-transaction)
   const [recentTransactions, setRecentTransactions] = useState([]);
-  const [recentLoading, setRecentLoading] = useState(true);
+  const [recentLoading, setRecentLoading] = useState(false);
 
   // Global loading
   const [initialLoading, setInitialLoading] = useState(true);
@@ -159,7 +159,6 @@ export default function DashboardPage() {
 
   // 5. Fetch Activity Chart Data (/mutasi/chart-aktivitas)
   const fetchChartMutations = useCallback(async () => {
-    setChartLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi/chart-aktivitas`, {
         credentials: "include",
@@ -182,14 +181,11 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error("Error fetching chart mutations:", err);
-    } finally {
-      setChartLoading(false);
     }
   }, []);
 
   // 6. Fetch Recent Transactions (/mutasi/recent-transaction)
   const fetchRecentTransactions = useCallback(async () => {
-    setRecentLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/mutasi/recent-transaction`, {
         credentials: "include",
@@ -200,8 +196,6 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error("Error fetching recent transactions:", err);
-    } finally {
-      setRecentLoading(false);
     }
   }, []);
 
@@ -275,33 +269,56 @@ export default function DashboardPage() {
             {/* Dashboard Header: Title & Action Buttons */}
             <DashboardPageHeader onAddMutation={handleOpenAddMutation} />
 
-            {/* Card Net Worth (Full-Width di atas 3 card) */}
-            <NetWorthCard totalBalance={totalBalance} balances={balances} />
+            {initialLoading ? (
+              /* ── Skeleton: ditampilkan sampai seluruh initial data siap ── */
+              <div className="space-y-5 sm:space-y-6 md:space-y-7 animate-pulse">
+                {/* NetWorthCard skeleton */}
+                <div className="h-36 rounded-2xl bg-slate-200/70" />
 
-            {/* Summary Cards Grid (Sisa Uang, Monthly Income, Monthly Spending) */}
-            <DashboardSummaryCards
-              monthlyIncome={monthlyIncome}
-              incomeComparison={incomeComparison}
-              monthlySpending={monthlySpending}
-              spendingComparison={spendingComparison}
-              netCashflow={netCashflow}
-              cashflowComparison={cashflowComparison}
-            />
+                {/* SummaryCards skeleton — 3 kolom */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                  <div className="h-28 rounded-2xl bg-slate-200/70" />
+                </div>
 
-            {/* Lower Dashboard Section: Full-Width Chart & Full-Width Transactions */}
-            <div className="space-y-4 sm:space-y-6 md:space-y-8" data-purpose="charts-and-transactions">
-              {/* Full-Width Activity Chart Section */}
-              <FinancialActivityChart
-                chartData={chartData}
-                chartLoading={chartLoading}
-              />
+                {/* Chart skeleton */}
+                <div className="h-64 rounded-2xl bg-slate-200/70" />
 
-              {/* Full-Width Recent Transactions Section */}
-              <RecentTransactionsCard
-                transactions={recentTransactions}
-                loading={recentLoading}
-              />
-            </div>
+                {/* Recent Transactions skeleton */}
+                <div className="h-64 rounded-2xl bg-slate-200/70" />
+              </div>
+            ) : (
+              <>
+                {/* Card Net Worth (Full-Width di atas 3 card) */}
+                <NetWorthCard totalBalance={totalBalance} balances={balances} />
+
+                {/* Summary Cards Grid (Sisa Uang, Monthly Income, Monthly Spending) */}
+                <DashboardSummaryCards
+                  monthlyIncome={monthlyIncome}
+                  incomeComparison={incomeComparison}
+                  monthlySpending={monthlySpending}
+                  spendingComparison={spendingComparison}
+                  netCashflow={netCashflow}
+                  cashflowComparison={cashflowComparison}
+                />
+
+                {/* Lower Dashboard Section: Full-Width Chart & Full-Width Transactions */}
+                <div className="space-y-4 sm:space-y-6 md:space-y-8" data-purpose="charts-and-transactions">
+                  {/* Full-Width Activity Chart Section */}
+                  <FinancialActivityChart
+                    chartData={chartData}
+                    chartLoading={chartLoading}
+                  />
+
+                  {/* Full-Width Recent Transactions Section */}
+                  <RecentTransactionsCard
+                    transactions={recentTransactions}
+                    loading={recentLoading}
+                  />
+                </div>
+              </>
+            )}
 
             {/* Modal Add Mutation Form */}
             <AddMutationModal
